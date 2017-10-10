@@ -5,7 +5,6 @@ exports.up = function (knex, Promise) {
       table.increments('id').primary();
       table.string('name');
       table.string('established');
-      table.string('location');
       table.string('website');
       table.timestamps(true, true);
     }),
