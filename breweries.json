@@ -1,0 +1,677 @@
+[
+  {
+    "name": "#FREEDOM Craft Brewery",
+    "website": "http://freedombrew.us",
+    "established": "2012",
+    "beers": [
+      {
+        "name": "\"18\" Imperial IPA 2",
+        "abv": "11.10",
+        "is_organic": "N",
+        "style": "American-Style Imperial Stout",
+        "breweryDB_id": "qa1QZU"
+      },
+      {
+        "name": "\"633\" American Pale Ale",
+        "abv": "6.33",
+        "is_organic": "N",
+        "style": "American-Style Pale Ale",
+        "breweryDB_id": "DBkLHq"
+      }
+    ]
+  },
+  {
+    "name": "'t Hofbrouwerijke",
+    "website": "http://www.thofbrouwerijke.be/",
+    "established": "1995",
+    "beers": [
+      {
+        "name": "\"Admiral\" Stache",
+        "abv": "7.00",
+        "is_organic": "N",
+        "style": "Baltic-Style Porter",
+        "breweryDB_id": "BU4IJP"
+      },
+      {
+        "name": "\"Ah Me Joy\" Porter",
+        "abv": "5.40",
+        "is_organic": "N",
+        "style": "Robust Porter",
+        "breweryDB_id": "pvE2w5"
+      }
+    ]
+  },
+  {
+    "name": "(512) Brewing Company",
+    "website": "http://www.512brewing.com/",
+    "established": "2008",
+    "beers": [
+      {
+        "name": "\"Alternating Currant\" Sour",
+        "abv": "4.80",
+        "is_organic": "N",
+        "style": "American-Style Sour Ale",
+        "breweryDB_id": "FfMi8U"
+      },
+      {
+        "name": "\"B\" Street Pineapple Blonde",
+        "abv": "4.60",
+        "is_organic": "N",
+        "style": "Golden or Blonde Ale",
+        "breweryDB_id": "cZDnM8"
+      }
+    ]
+  },
+  {
+    "name": "1. Chodsky pivovarek na Morave",
+    "website": "http://brewery.com",
+    "established": "1995",
+    "beers": [
+      {
+        "name": "\"B.B. Rodriguez\" Double Brown",
+        "abv": "8.50",
+        "is_organic": "N",
+        "style": "American-Style Brown Ale",
+        "breweryDB_id": "FfMi8U"
+      },
+      {
+        "name": "\"Bison Eye Rye\" Pale Ale | 2 of 4 Part Pale Ale Series",
+        "abv": "5.80",
+        "is_organic": "N",
+        "style": "American-Style Pale Ale",
+        "breweryDB_id": "mMnrjZ"
+      }
+    ]
+  },
+  {
+    "name": "1. Selský pivovárek Kroměříž",
+    "website": "http://www.selsky-pivovarek.cz",
+    "established": "1995",
+    "beers": [
+      {
+        "name": "\"California Crude\" Black IPA",
+        "abv": "7.60",
+        "is_organic": "N",
+        "style": "American-Style Black Ale",
+        "breweryDB_id": "H8jawh"
+      },
+      {
+        "name": "\"C’est Noir\" Imperial Stout",
+        "abv": "10.80",
+        "is_organic": "N",
+        "style": "British-Style Imperial Stout",
+        "breweryDB_id": "H8jawh"
+      }
+    ]
+  },
+  {
+    "name": "10 Barrel Brewing Company",
+    "website": "http://www.10barrel.com/",
+    "established": "2006",
+    "beers": [
+      {
+        "name": "\"Dust Up\" Cloudy Pale Ale | 1 of 4 Part Pale Ale Series",
+        "abv": "5.40",
+        "is_organic": "N",
+        "style": "American-Style Pale Ale",
+        "breweryDB_id": "mMnrjZ"
+      },
+      {
+        "name": "\"EVL1\" Imperial Red Ale",
+        "abv": "10.40",
+        "is_organic": "N",
+        "style": "Imperial Red Ale",
+        "breweryDB_id": "H8jawh"
+      }
+    ]
+  },
+  {
+    "name": "101 Brewing",
+    "website": "http://www.101brewery.com",
+    "established": "1995",
+    "beers": [
+      {
+        "name": "\"Galactic Wrath\" IPA",
+        "abv": "7.50",
+        "is_organic": "N",
+        "style": "American-Style India Pale Ale",
+        "breweryDB_id": "Xnf2WT"
+      },
+      {
+        "name": "\"God Country\" Kolsch",
+        "abv": "5.60",
+        "is_organic": "N",
+        "style": "German-Style Kölsch / Köln-Style Kölsch",
+        "breweryDB_id": "nkRssU"
+      }
+    ]
+  },
+  {
+    "name": "101 Cider House",
+    "website": "http://www.101cider.com/",
+    "established": "2013",
+    "beers": [
+      {
+        "name": "\"Hey Victor\" Smoked Porter",
+        "abv": "5.50",
+        "is_organic": "N",
+        "style": "Smoke Beer (Lager or Ale)",
+        "breweryDB_id": "Eu8QY2"
+      },
+      {
+        "name": "\"Ignition\" IPA",
+        "abv": "6.60",
+        "is_organic": "N",
+        "style": "American-Style India Pale Ale",
+        "breweryDB_id": "H8jawh"
+      }
+    ]
+  },
+  {
+    "name": "101 North Brewing Company",
+    "website": "http://www.101northbeer.com/",
+    "established": "1995",
+    "beers": [
+      {
+        "name": "\"Jemez Field Notes\" Golden Lager",
+        "abv": "4.90",
+        "is_organic": "N",
+        "style": "Golden or Blonde Ale",
+        "breweryDB_id": "mMnrjZ"
+      },
+      {
+        "name": "\"Jemmy Dean\" Breakfast Stout",
+        "abv": "NaN",
+        "is_organic": "N",
+        "style": "Sweet or Cream Stout",
+        "breweryDB_id": "GmYAZI"
+      }
+    ]
+  },
+  {
+    "name": "105 West Brewing Co.",
+    "website": "http://105westbrewing.com/",
+    "established": "1995",
+    "beers": [
+      {
+        "name": "\"Mary Lee Please Don't Eat Me\" Saison Ale",
+        "abv": "5.00",
+        "is_organic": "N",
+        "style": "French & Belgian-Style Saison",
+        "breweryDB_id": "qa1QZU"
+      },
+      {
+        "name": "\"Mauvaises Choses\"",
+        "abv": "7.00",
+        "is_organic": "N",
+        "style": "Belgian-Style Pale Strong Ale",
+        "breweryDB_id": "NwFxny"
+      }
+    ]
+  },
+  {
+    "name": "10K Brewing",
+    "website": "http://10kbrew.com/",
+    "established": "2014",
+    "beers": [
+      {
+        "name": "\"Mike Saw a Sasquatch\" Session Ale",
+        "abv": "4.70",
+        "is_organic": "N",
+        "style": "Golden or Blonde Ale",
+        "breweryDB_id": "snQlvg"
+      },
+      {
+        "name": "\"My\" Bock",
+        "abv": "6.00",
+        "is_organic": "N",
+        "style": "Traditional German-Style Bock",
+        "breweryDB_id": "YG37Js"
+      }
+    ]
+  },
+  {
+    "name": "10th District Brewing Company",
+    "website": "http://www.10thdistrictbrewing.com/",
+    "established": "1995",
+    "beers": [
+      {
+        "name": "\"Not Just Some\" Oatmeal Stout",
+        "abv": "NaN",
+        "is_organic": "N",
+        "style": "Oatmeal Stout",
+        "breweryDB_id": "qyMFUm"
+      },
+      {
+        "name": "\"OG\" Original Gangster",
+        "abv": "6.50",
+        "is_organic": "N",
+        "style": "American-Style Pale Ale",
+        "breweryDB_id": "S3V7kw"
+      }
+    ]
+  },
+  {
+    "name": "11 Below Brewing",
+    "website": "http://11belowbrewing.com/",
+    "established": "1995",
+    "beers": [
+      {
+        "name": "\"Pinch\" Pilsner",
+        "abv": "4.90",
+        "is_organic": "N",
+        "style": "American-Style Pilsener",
+        "breweryDB_id": "FfMi8U"
+      },
+      {
+        "name": "\"Ray Brown\" Porter",
+        "abv": "5.80",
+        "is_organic": "Y",
+        "style": "Brown Porter",
+        "breweryDB_id": "u99e3l"
+      }
+    ]
+  },
+  {
+    "name": "1188 Brewing Company",
+    "website": "http://www.1188brewing.com/",
+    "established": "2012",
+    "beers": [
+      {
+        "name": "\"Roux 40\" Red IPA",
+        "abv": "6.70",
+        "is_organic": "N",
+        "style": "American-Style India Pale Ale",
+        "breweryDB_id": "X38nDm"
+      },
+      {
+        "name": "\"Small Batch\" Hazelwood Farmhouse IPA",
+        "abv": "6.00",
+        "is_organic": "Y",
+        "style": "French & Belgian-Style Saison",
+        "breweryDB_id": "m9gWbo"
+      }
+    ]
+  },
+  {
+    "name": "12 Acres Brewing Company",
+    "website": "http://www.12acresbrewing.ie",
+    "established": "1995",
+    "beers": [
+      {
+        "name": "\"Sneaky Devil\" Double IPA",
+        "abv": "7.80",
+        "is_organic": "N",
+        "style": "Imperial or Double India Pale Ale",
+        "breweryDB_id": "H8jawh"
+      },
+      {
+        "name": "\"Sniff\" IPA",
+        "abv": "6.00",
+        "is_organic": "N",
+        "style": "American-Style India Pale Ale",
+        "breweryDB_id": "FfMi8U"
+      }
+    ]
+  },
+  {
+    "name": "12 Gates Brewing Company",
+    "website": "http://12gatesbrewing.com/",
+    "established": "1995",
+    "beers": [
+      {
+        "name": "\"SuperDude!\" Barrel-Aged Russian Imperial Stout",
+        "abv": "10.00",
+        "is_organic": "Y",
+        "style": "Wood- and Barrel-Aged Strong Beer",
+        "breweryDB_id": "K3Jy1E"
+      },
+      {
+        "name": "\"The Great Boo\" Pumpkin Ale",
+        "abv": "5.30",
+        "is_organic": "N",
+        "style": "Pumpkin Beer",
+        "breweryDB_id": "6XlqQv"
+      }
+    ]
+  },
+  {
+    "name": "12 West Brewing Co.",
+    "website": "http://12westbrewing.com/",
+    "established": "1995",
+    "beers": [
+      {
+        "name": "\"The King\" Imperial Elvis Peanut Butter Banana Sandwich Brown Ale",
+        "abv": "8.20",
+        "is_organic": "Y",
+        "style": "Specialty Beer",
+        "breweryDB_id": "UNp9ot"
+      },
+      {
+        "name": "\"The Reason\" Saison",
+        "abv": "4.50",
+        "is_organic": "N",
+        "style": "French & Belgian-Style Saison",
+        "breweryDB_id": "FfMi8U"
+      }
+    ]
+  },
+  {
+    "name": "127 Brewing",
+    "website": "https://www.facebook.com/127brewing",
+    "established": "2014",
+    "beers": [
+      {
+        "name": "\"Thick Witted\" Kaffir Double Wit",
+        "abv": "6.70",
+        "is_organic": "N",
+        "style": "Belgian-Style White (or Wit) / Belgian-Style Wheat",
+        "breweryDB_id": "bdjbTZ"
+      },
+      {
+        "name": "\"Thunderkissed\" Coffee Infused Milk Stout",
+        "abv": "5.30",
+        "is_organic": "N",
+        "style": "Coffee-Flavored Beer",
+        "breweryDB_id": "mJEOcA"
+      }
+    ]
+  },
+  {
+    "name": "12Degree Brewing",
+    "website": "http://www.12degree.com/",
+    "established": "2013",
+    "beers": [
+      {
+        "name": "\"Tractor Beam\" Oatmeal Stout",
+        "abv": "5.80",
+        "is_organic": "N",
+        "style": "Oatmeal Stout",
+        "breweryDB_id": "FfMi8U"
+      },
+      {
+        "name": "\"Turbocharger\" Double IPA",
+        "abv": "8.20",
+        "is_organic": "N",
+        "style": "Imperial or Double India Pale Ale",
+        "breweryDB_id": "FfMi8U"
+      }
+    ]
+  },
+  {
+    "name": "13 Below Brewery",
+    "website": "http://www.13belowbrewery.com",
+    "established": "2017",
+    "beers": [
+      {
+        "name": "\"Whistleblower\" Belgian Wit",
+        "abv": "5.20",
+        "is_organic": "N",
+        "style": "Belgian-Style White (or Wit) / Belgian-Style Wheat",
+        "breweryDB_id": "H8jawh"
+      },
+      {
+        "name": "\"Wintah\" Ale",
+        "abv": "6.00",
+        "is_organic": "N",
+        "style": "American-Style Brown Ale",
+        "breweryDB_id": "bKPbvo"
+      }
+    ]
+  },
+  {
+    "name": "13 Stripes Brewery",
+    "website": "http://www.13stripesbrewery.com/",
+    "established": "2016",
+    "beers": [
+      {
+        "name": "# 100",
+        "abv": "10.00",
+        "is_organic": "N",
+        "style": "Scottish-Style Light Ale",
+        "breweryDB_id": "rmvkfa"
+      },
+      {
+        "name": "# 500",
+        "abv": "10.00",
+        "is_organic": "N",
+        "style": "Imperial or Double India Pale Ale",
+        "breweryDB_id": "rmvkfa"
+      }
+    ]
+  },
+  {
+    "name": "13 Virtues Brewing Co",
+    "website": "http://13virtuesbrewing.com/",
+    "established": "1994",
+    "beers": [
+      {
+        "name": "#022 Nectarine Pale Ale",
+        "abv": "4.80",
+        "is_organic": "N",
+        "style": "American-Style Pale Ale",
+        "breweryDB_id": "ho8CUc"
+      },
+      {
+        "name": "#1 American",
+        "abv": "NaN",
+        "is_organic": "N",
+        "style": "American-Style Pale Ale",
+        "breweryDB_id": "rflWkA"
+      }
+    ]
+  },
+  {
+    "name": "14er Brewing Company",
+    "website": "http://www.14erBrewing.com",
+    "established": "2015",
+    "beers": [
+      {
+        "name": "#1 Brown Brett Braggot",
+        "abv": "6.00",
+        "is_organic": "N",
+        "style": "Braggot",
+        "breweryDB_id": "WgTa5f"
+      },
+      {
+        "name": "#1 Fan",
+        "abv": "6.80",
+        "is_organic": "N",
+        "style": "Fruit Wheat Ale or Lager with or without Yeast",
+        "breweryDB_id": "187kFc"
+      }
+    ]
+  },
+  {
+    "name": "14th Star Brewing",
+    "website": "http://www.14thstarbrewing.com/",
+    "established": "2011",
+    "beers": [
+      {
+        "name": "#10 Hefewiezen",
+        "abv": "5.10",
+        "is_organic": "N",
+        "style": "South German-Style Hefeweizen / Hefeweissbier",
+        "breweryDB_id": "QkO9Eq"
+      },
+      {
+        "name": "#15",
+        "abv": "6.70",
+        "is_organic": "N",
+        "style": "American-Style India Pale Ale",
+        "breweryDB_id": "BiNSTd"
+      }
+    ]
+  },
+  {
+    "name": "16 Mile Brewing Company",
+    "website": "http://16milebrewery.com/",
+    "established": "2009",
+    "beers": [
+      {
+        "name": "#2 Brett Golden Sour",
+        "abv": "6.50",
+        "is_organic": "N",
+        "style": "Golden or Blonde Ale",
+        "breweryDB_id": "WgTa5f"
+      },
+      {
+        "name": "#2 Strong Ale",
+        "abv": "10.00",
+        "is_organic": "Y",
+        "style": "Strong Ale",
+        "breweryDB_id": "sNQLDD"
+      }
+    ]
+  },
+  {
+    "breweryDB_id": "DByaot",
+    "name": "1668 Winery & Lockside Brewery",
+    "established": "1995",
+    "website": "http://1668winery.com/"
+  },
+  {
+    "breweryDB_id": "ZTtjEm",
+    "name": "1781 Brewing Company",
+    "established": "2016",
+    "website": "http://www.1781brewing.com"
+  },
+  {
+    "breweryDB_id": "eRrmuR",
+    "name": "1789 Brewery & Taphouse",
+    "established": "1995",
+    "website": "http://1789brewery.com"
+  },
+  {
+    "breweryDB_id": "39pp3Z",
+    "name": "17th State Brewing Company",
+    "established": "1995",
+    "website": "http://www.17statebrewco.com"
+  },
+  {
+    "breweryDB_id": "oR97q7",
+    "name": "1859 Central Ranges Brewing Co",
+    "established": "1995",
+    "website": "http://brewery.com"
+  },
+  {
+    "breweryDB_id": "wTxSsQ",
+    "name": "18th Street Brewery",
+    "established": "2010",
+    "website": "http://18thstreetbrewery.com/"
+  },
+  {
+    "breweryDB_id": "RQNLui",
+    "name": "1912 Brewing Company",
+    "established": "1995",
+    "website": "http://www.1912brewing.com/"
+  },
+  {
+    "breweryDB_id": "nFgA09",
+    "name": "192 Brewing Company",
+    "established": "2009",
+    "website": "http://www.192brewing.com/"
+  },
+  {
+    "breweryDB_id": "HQNyhH",
+    "name": "1933 Brewing Company",
+    "established": "2014",
+    "website": "http://1933brewing.com/"
+  },
+  {
+    "breweryDB_id": "r4JMh7",
+    "name": "1940's Brewing Company",
+    "established": "2014",
+    "website": "http://www.1940sbrewingcompany.com"
+  },
+  {
+    "breweryDB_id": "ujPz4L",
+    "name": "1974 Brewing Company",
+    "established": "2012",
+    "website": "http://www.1974brewingcompany.com/"
+  },
+  {
+    "breweryDB_id": "qfGVU4",
+    "name": "2 Basset Brewery",
+    "established": "2016",
+    "website": "http://brewery.com"
+  },
+  {
+    "breweryDB_id": "6XWJDG",
+    "name": "2 Crows Brewing",
+    "established": "1995",
+    "website": "https://www.2crowsbrewing.com"
+  },
+  {
+    "breweryDB_id": "mSWjOr",
+    "name": "2 Row Brewing Co.",
+    "established": "1995",
+    "website": "http://2rowbrewing.com/"
+  },
+  {
+    "breweryDB_id": "7Y1KTM",
+    "name": "2 Silos Brewing Co",
+    "established": "2017",
+    "website": "http://www.2silosbrewing.com"
+  },
+  {
+    "breweryDB_id": "AS7unB",
+    "name": "2 Tones Brewing Co.",
+    "established": "1995",
+    "website": "https://www.2tonesbrewingco.com/"
+  },
+  {
+    "breweryDB_id": "ZsEYA4",
+    "name": "2 Towns Ciderhouse",
+    "established": "2010",
+    "website": "http://www.2TownsCiderhouse.com"
+  },
+  {
+    "breweryDB_id": "FpccQb",
+    "name": "2 Way Brewing Company",
+    "established": "1995",
+    "website": "http://brewery.com"
+  },
+  {
+    "breweryDB_id": "ALh0q8",
+    "name": "2 Witches Winery and Brewing Company, Inc.",
+    "established": "2012",
+    "website": "http://brewery.com"
+  },
+  {
+    "breweryDB_id": "sfmlFY",
+    "name": "20 Corners Brewing",
+    "established": "1995",
+    "website": "http://www.20cornersbrewing.com/"
+  },
+  {
+    "breweryDB_id": "HI1vjO",
+    "name": "212 Brewing Company",
+    "established": "2013",
+    "website": "http://www.212brewing.com"
+  },
+  {
+    "breweryDB_id": "ajBhPo",
+    "name": "217 Brew Works",
+    "established": "1995",
+    "website": "http://217brewworks.com/"
+  },
+  {
+    "breweryDB_id": "EdRcIs",
+    "name": "21st Amendment Brewery",
+    "established": "2000",
+    "website": "http://www.21st-amendment.com/"
+  },
+  {
+    "breweryDB_id": "DYA1CI",
+    "name": "238 Brewing Company",
+    "established": "2015",
+    "website": "http://238brewing.com/"
+  },
+  {
+    "breweryDB_id": "V79a57",
+    "name": "23rd Street Brewery",
+    "established": "2006",
+    "website": "http://www.brew23.com/"
+  }
+]
