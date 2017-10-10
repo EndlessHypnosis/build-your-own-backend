@@ -16,6 +16,7 @@ const database = require('knex')(configuration);
 
 const keys = require('./public/scripts/key');
 
+const fs = require('fs');
 
 const cleanBreweryData = (dataToClean) => {
   console.log('clean brewery data called');
@@ -47,11 +48,43 @@ const cleanBeerData = (dataToClean, breweries) => {
     return newBeer;
   });
   //return cleanedBeerData;
-  console.log('### CLEANED BEERS:', cleanedBeerData);
-  console.log('### CLEANED BREWERIES:', breweries);
+  console.log('### CLEANED BEERS:', cleanedBeerData.length);
+  console.log('### CLEANED BREWERIES:', breweries.length);
 
+
+  let BreweriesWithBeers = breweries.map((brewery, index) => {
+
+    if (index < 25) {
+
+      let newBrewery = Object.assign({}, {
+        name: brewery.name,
+        website: brewery.website,
+        established: brewery.established,
+        beers: []
+      });
+
+      newBrewery.beers.push(cleanedBeerData[index * 2])
+      newBrewery.beers.push(cleanedBeerData[(index * 2) + 1])
   
-//////
+      return newBrewery;
+
+    } else {
+      return brewery;
+    }
+
+  });
+
+
+
+  let outputJson = JSON.stringify(BreweriesWithBeers, null, 2);
+
+  fs.writeFile('./breweries.json', outputJson, 'utf8', (error) => {
+    if (error) {
+      return console.error(error);
+    }
+  });
+  
+////// BEERS
 // {
 //   name: '#2 Brett Golden Sour',
 //     abv: '6.50',
@@ -66,7 +99,7 @@ const cleanBeerData = (dataToClean, breweries) => {
 //         style: 'Strong Ale',
 //           breweryDB_id: 'sNQLDD'
 // }
-// ////////
+// //////// BREWERY
 // {
 //   breweryDB_id: 'YXDiJk',
 //   name: '#FREEDOM Craft Brewery',
