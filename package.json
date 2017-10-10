@@ -11,10 +11,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "babel": "^6.23.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
     "body-parser": "^1.18.2",
     "express": "^4.16.1",
     "knex": "^0.13.0",
-    "pg": "^7.3.0"
+    "pg": "^7.3.0",
+    "pg-native": "^2.2.0",
+    "webpack": "^3.6.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
