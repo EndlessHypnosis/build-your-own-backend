@@ -18,8 +18,8 @@ const keys = require('./public/scripts/key');
 
 
 const cleanBreweryData = (dataToClean) => {
+  console.log('clean brewery data called');
   let breweries = dataToClean.data;
-  // console.log('brew 1:', breweries[0])
   let cleanedBreweries = breweries.map(brewery => {
     let newBrewery = Object.assign({}, {
       breweryDB_id: brewery.id,
@@ -28,16 +28,14 @@ const cleanBreweryData = (dataToClean) => {
       website: brewery.website || 'http://brewery.com'
     });
     return newBrewery;
-  })
-  // console.log('brew 1 CLEANED:', cleanedBreweries[0])
-  return cleanedBreweries;
+  });
+  // use the cleanedbreweries
+  fetchBeers(cleanBeerData, cleanedBreweries);
 }
 
 
-const cleanBeerData = (dataToClean) => {
-  console.log('beer looks like:', dataToClean.data[0]);
+const cleanBeerData = (dataToClean, breweries) => {
   let beers = dataToClean.data;
-
   let cleanedBeerData = beers.map(beer => {
     let newBeer = Object.assign({}, {
       name: beer.name || 'Default Beer',
@@ -48,50 +46,87 @@ const cleanBeerData = (dataToClean) => {
     });
     return newBeer;
   });
-  return cleanedBeerData;
+  //return cleanedBeerData;
+  console.log('### CLEANED BEERS:', cleanedBeerData);
+  console.log('### CLEANED BREWERIES:', breweries);
+
+  
+//////
+// {
+//   name: '#2 Brett Golden Sour',
+//     abv: '6.50',
+//       is_organic: 'N',
+//         style: 'Golden or Blonde Ale',
+//           breweryDB_id: 'WgTa5f'
+// },
+// {
+//   name: '#2 Strong Ale',
+//     abv: '10.00',
+//       is_organic: 'Y',
+//         style: 'Strong Ale',
+//           breweryDB_id: 'sNQLDD'
+// }
+// ////////
+// {
+//   breweryDB_id: 'YXDiJk',
+//   name: '#FREEDOM Craft Brewery',
+//   established: '2012',
+//   website: 'http://freedombrew.us'
+// },
+// {
+//   breweryDB_id: 'Klgom2',
+//   name: '\'t Hofbrouwerijke',
+//   established: '1995',
+//   website: 'http://www.thofbrouwerijke.be/'
+// }
+
+
+  
 }
 
 
-const fetchBeers = () => {
+const fetchBeers = (callback, breweryData) => {
+  // let cleanedBeers = [];
   http.get(`http://api.brewerydb.com/v2/beers?key=${keys.apiKey}&withBreweries=Y`, (res) => {
     var body = '';
-
+    res.setEncoding('utf8');
     res.on('data', function (chunk) {
       body += chunk;
     });
 
     res.on('end', function () {
       var beers = JSON.parse(body);
-      // console.log("Got beers: ", beers);
-
-      let cleanedBeers = cleanBeerData(beers);
-
-      response.status(200).json(cleanedBeers)
+      // cleanedBeers = cleanBeerData(beers);
+      callback(beers, breweryData);
     });
+
   }).on('error', function (e) {
     console.log("Got an error: ", e);
-    response.status(500).json({ e });
   });
+  // console.log('cleanedBeerscleanedBeers:', cleanedBeers);
+  // return cleanedBeers;
 }
 
-const fetchBreweries = () => {
+
+const fetchBreweries = (callback) => {
+  // let cleanedBreweries = [];
+
   http.get(`http://api.brewerydb.com/v2/breweries?key=${keys.apiKey}`, (res) => {
     var body = '';
-
+    res.setEncoding('utf8');
     res.on('data', function (chunk) {
       body += chunk;
     });
 
     res.on('end', function () {
-      
       var breweries = JSON.parse(body);
-      let cleanedBreweries = cleanBreweryData(breweries);
-      response.status(200).json(cleanedBreweries);
-
+      callback(breweries);
+      // cleanedBreweries = cleanBreweryData(breweries);
+      // return cleanedBreweries;
     });
+
   }).on('error', function (e) {
     console.log("Got an error: ", e);
-    response.status(500).json({ e });
   });
 }
 
@@ -105,8 +140,12 @@ app.get('/api/v1/seedbyob', (request, response) => {
   //   console.log('your data is:', data)
   // })
 
-  let cleanedBreweries = fetchBreweries();
-  let cleanedBeers = fetchBeers();
+  fetchBreweries(cleanBreweryData);
+  console.log('cleaned brewery data');
+  
+  // let cleanedBeers = fetchBeers();
+
+  // response.status(200).json(cleanedBreweries);
 
   // database('projects').select()
   //   .then(projects => {
