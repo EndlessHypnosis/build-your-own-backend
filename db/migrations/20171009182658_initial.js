@@ -1,5 +1,11 @@
 
+// import { getSchema } from '../utils/schemaBuilder';
+
+
+const schemaBuilder = require('../utils/schemaBuilder');
+
 exports.up = function (knex, Promise) {
+  console.log('GOING UP: ', schemaBuilder.getSchema());
   return Promise.all([
     knex.schema.createTable('breweries', table => {
       table.increments('id').primary();
