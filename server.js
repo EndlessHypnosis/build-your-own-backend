@@ -18,6 +18,12 @@ const keys = require('./public/scripts/key');
 
 const fs = require('fs');
 
+const isInt = (value) => {
+ return !isNaN(value) &&
+        parseInt(Number(value)) == value &&
+        !isNaN(parseInt(value, 10));
+}
+
 const cleanBreweryData = (dataToClean) => {
   console.log('clean brewery data called');
   let breweries = dataToClean.data;
@@ -300,7 +306,8 @@ app.post('/api/v1/breweries', (request, response) => {
     if (!brewery[requiredParameter]) {
       return response
         .status(422)
-        .send({ error: `Expected format: { name: <String>, established: <String>, website: <String> }. You're missing a "${requiredParameter}" property.` });
+        .send({ error: `Expected format: { name: <String>, established: <String>, website: <String> }. You're missing a
+        "${requiredParameter}" property.` });
     }
   }
 
@@ -311,6 +318,50 @@ app.post('/api/v1/breweries', (request, response) => {
     .catch(error => {
       response.status(500).json({ error });
     });
+});
+
+// patch data for individual beer
+app.patch('/api/v1/beers/:id', (request, response) =>  {
+  if(!isInt(request.params.id)) {
+    return response.status(422).json({ error: `Invalid ID. Cannot update beer.` });
+  }
+  const newBeerData = request.body;
+  database('beers').where('id', request.params.id)
+  .update(newBeerData, '*')
+  .then(beers => {
+    response.status(200).json(beers[0]);
+  })
+  .catch(error => {
+    response.status(500).json({ error });
+  });
+});
+
+
+// put data for a brewery
+app.put('/api/v1/breweries/:id', (request, response) =>  {
+  const newBreweryData = request.body;
+  if(!isInt(request.params.id)) {
+    return response.status(422).json({ error: `Invalid ID. Incorrect ID format.` });
+  }
+  for (let requiredParameter of ['name', 'established', 'website']) {
+    if (!newBreweryData[requiredParameter]) {
+      return response
+        .status(422)
+        .send({ error: `Expected format: { name: <String>, established: <String>, website: <String> }.
+          You're missing a "${requiredParameter}" property.` });
+    }
+  }
+  database('breweries').where('id', request.params.id)
+  .update(newBreweryData, '*')
+  .then(brewery => {
+    if(brewery.length > 0) {
+    return response.status(200).json(brewery[0]);
+    }
+    response.status(422).json('Invaild ID.  No brewery found with that ID.')
+  })
+  .catch(error => {
+    response.status(500).json({ error });
+  });
 });
 
 // DELETE brewery based on ID
