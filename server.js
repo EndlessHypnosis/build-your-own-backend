@@ -14,7 +14,12 @@ const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 
-const keys = require('./public/scripts/key');
+// uncomment this when you need to re-seed the database.
+// const keys = require('./public/scripts/key');
+
+const keys = {
+  apiKey: 'INVALID KEY'
+}
 
 const fs = require('fs');
 
