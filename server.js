@@ -191,6 +191,32 @@ app.get('/api/v1/seedbyob', (request, response) => {
 
 
 
+
+
+
+app.get('/api/v1/breweries', (request, response) => {
+  database('breweries').select()
+    .then(breweries => {
+      response.status(200).json(breweries);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
+
+
+app.get('/api/v1/breweries/:id', (request, response) => {
+  database('breweries').select().where('id', request.params.id)
+    .then(breweries => {
+      response.status(200).json(breweries);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
+
+
+
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
 });
