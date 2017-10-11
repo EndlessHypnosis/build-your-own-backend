@@ -165,17 +165,7 @@ app.get('/api/v1/seedbyob', (request, response) => {
 });
 
 
-// get all beers
-app.get('/api/v1/beers', (request, response) => {
-  database('beers')
-    .select()
-    .then(beers => {
-      response.status(200).json(beers)
-    })
-    .catch(error => {
-      response.status(500).json({ error })
-    })
-});
+
 
 // get a beer by beer id
 app.get('/api/v1/beers/:id', (request, response) => {
@@ -237,9 +227,6 @@ app.delete('/api/v1/beers/:id', (request, response) => {
 });
 
 
-
-
-
 // get all beers associated with brewery id
 app.get('/api/v1/breweries/:id/beers', (request, response) => {
   database('beers').where('brewery_id', request.params.id).select()
@@ -258,10 +245,23 @@ app.get('/api/v1/breweries/:id/beers', (request, response) => {
 });
 
 
-
-
-
-
+// get all beers with optional query param by ABV
+app.get('/api/v1/beers', (request, response) => {
+  let userAbv = request.query.abv;
+  let myDataBase
+  if(userAbv) {
+    myDataBase = database('beers').where('abv', '>=', request.query.abv)
+  } else {
+    myDataBase = database('beers')
+  }
+  myDataBase.select()
+    .then(beers => {
+      response.status(200).json(beers)
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
 
 // GET all breweries
 app.get('/api/v1/breweries', (request, response) => {
