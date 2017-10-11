@@ -291,6 +291,49 @@ app.get('/api/v1/breweries/:id', (request, response) => {
 
 
 
+app.post('/api/v1/breweries', (request, response) => {
+  const brewery = request.body;
+
+  for (let requiredParameter of ['name', 'established', 'website']) {
+    if (!brewery[requiredParameter]) {
+      return response
+        .status(422)
+        .send({ error: `Expected format: { name: <String>, established: <String>, website: <String> }. You're missing a "${requiredParameter}" property.` });
+    }
+  }
+
+  database('breweries').insert(brewery, '*')
+    .then(brewery => {
+      response.status(201).json(brewery[0]);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
+
+
+app.delete('/api/v1/breweries/:id', (request, response) => {
+  if (!Number.isInteger(parseInt(request.params.id))) {
+    return response
+    .status(422)
+    .send({ error: `Invalid ID. Cannot delete brewery.` });
+  }
+  
+  const breweryIdToDelete = request.params.id;
+
+  database('breweries')
+    .where('id', breweryIdToDelete)
+    .del()
+    .then(brewery => {
+      response.sendStatus(200);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
+
+
+
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
 });
