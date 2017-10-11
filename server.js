@@ -65,7 +65,7 @@ const cleanBeerData = (dataToClean, breweries) => {
 
       newBrewery.beers.push(cleanedBeerData[index * 2])
       newBrewery.beers.push(cleanedBeerData[(index * 2) + 1])
-  
+
       return newBrewery;
 
     } else {
@@ -83,38 +83,38 @@ const cleanBeerData = (dataToClean, breweries) => {
       return console.error(error);
     }
   });
-  
-////// BEERS
-// {
-//   name: '#2 Brett Golden Sour',
-//     abv: '6.50',
-//       is_organic: 'N',
-//         style: 'Golden or Blonde Ale',
-//           breweryDB_id: 'WgTa5f'
-// },
-// {
-//   name: '#2 Strong Ale',
-//     abv: '10.00',
-//       is_organic: 'Y',
-//         style: 'Strong Ale',
-//           breweryDB_id: 'sNQLDD'
-// }
-// //////// BREWERY
-// {
-//   breweryDB_id: 'YXDiJk',
-//   name: '#FREEDOM Craft Brewery',
-//   established: '2012',
-//   website: 'http://freedombrew.us'
-// },
-// {
-//   breweryDB_id: 'Klgom2',
-//   name: '\'t Hofbrouwerijke',
-//   established: '1995',
-//   website: 'http://www.thofbrouwerijke.be/'
-// }
+
+  ////// BEERS
+  // {
+  //   name: '#2 Brett Golden Sour',
+  //     abv: '6.50',
+  //       is_organic: 'N',
+  //         style: 'Golden or Blonde Ale',
+  //           breweryDB_id: 'WgTa5f'
+  // },
+  // {
+  //   name: '#2 Strong Ale',
+  //     abv: '10.00',
+  //       is_organic: 'Y',
+  //         style: 'Strong Ale',
+  //           breweryDB_id: 'sNQLDD'
+  // }
+  // //////// BREWERY
+  // {
+  //   breweryDB_id: 'YXDiJk',
+  //   name: '#FREEDOM Craft Brewery',
+  //   established: '2012',
+  //   website: 'http://freedombrew.us'
+  // },
+  // {
+  //   breweryDB_id: 'Klgom2',
+  //   name: '\'t Hofbrouwerijke',
+  //   established: '1995',
+  //   website: 'http://www.thofbrouwerijke.be/'
+  // }
 
 
-  
+
 }
 
 
@@ -175,7 +175,7 @@ app.get('/api/v1/seedbyob', (request, response) => {
 
   fetchBreweries(cleanBreweryData);
   console.log('cleaned brewery data');
-  
+
   // let cleanedBeers = fetchBeers();
 
   // response.status(200).json(cleanedBreweries);
@@ -197,7 +197,13 @@ app.get('/api/v1/seedbyob', (request, response) => {
 app.get('/api/v1/breweries', (request, response) => {
   database('breweries').select()
     .then(breweries => {
-      response.status(200).json(breweries);
+      if (breweries.length) {
+        response.status(200).json(breweries);
+      } else {
+        response.status(404).json({
+          error: `Could not find any Breweries`
+        });
+      }
     })
     .catch(error => {
       response.status(500).json({ error });
@@ -206,9 +212,15 @@ app.get('/api/v1/breweries', (request, response) => {
 
 
 app.get('/api/v1/breweries/:id', (request, response) => {
-  database('breweries').select().where('id', request.params.id)
+  database('breweries').where('id', request.params.id).select()
     .then(breweries => {
-      response.status(200).json(breweries);
+      if (breweries.length) {
+        response.status(200).json(breweries);
+      } else {
+        response.status(404).json({
+          error: `Could not find any Breweries with ID ${request.params.id}`
+        });
+      }
     })
     .catch(error => {
       response.status(500).json({ error });
