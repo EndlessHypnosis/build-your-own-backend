@@ -65,7 +65,7 @@ const cleanBeerData = (dataToClean, breweries) => {
 
       newBrewery.beers.push(cleanedBeerData[index * 2])
       newBrewery.beers.push(cleanedBeerData[(index * 2) + 1])
-  
+
       return newBrewery;
 
     } else {
@@ -83,7 +83,7 @@ const cleanBeerData = (dataToClean, breweries) => {
       return console.error(error);
     }
   });
-  
+
 ////// BEERS
 // {
 //   name: '#2 Brett Golden Sour',
@@ -114,7 +114,7 @@ const cleanBeerData = (dataToClean, breweries) => {
 // }
 
 
-  
+
 }
 
 
@@ -175,7 +175,7 @@ app.get('/api/v1/seedbyob', (request, response) => {
 
   fetchBreweries(cleanBreweryData);
   console.log('cleaned brewery data');
-  
+
   // let cleanedBeers = fetchBeers();
 
   // response.status(200).json(cleanedBreweries);
@@ -188,6 +188,55 @@ app.get('/api/v1/seedbyob', (request, response) => {
   //     response.status(500).json({ error });
   //   });
 });
+
+
+// get all beers
+app.get('/api/v1/beers', (request, response) => {
+  database('beers')
+  .select()
+  .then(beers => {
+    response.status(200).json(beers)
+  })
+  .catch(error => {
+    response.status(500).json({error})
+  })
+});
+
+// get a beer by beer id
+app.get('/api/v1/beers/:id', (request, response) => {
+  database('beers').where('id', request.params.id).select()
+    .then(beers => {
+      if (beers.length) {
+        response.status(200).json(beers);
+      } else {
+        response.status(404).json({
+          error: `Could not find beer with that id ${request.params.id}`
+        });
+      }
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
+
+// get all beers associated with brewery id
+app.get('/api/v1/breweries/:id/beers', (request, response) => {
+  database('beers').where('brewery_id', request.params.id).select()
+    .then(beers => {
+      if (beers.length) {
+        response.status(200).json(beers);
+      } else {
+        response.status(404).json({
+          error: `Could not find beers for that Brewery ${request.params.id}`
+        });
+      }
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
+
+
 
 
 
