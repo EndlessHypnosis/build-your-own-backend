@@ -83,38 +83,7 @@ const cleanBeerData = (dataToClean, breweries) => {
       return console.error(error);
     }
   });
-
-////// BEERS
-// {
-//   name: '#2 Brett Golden Sour',
-//     abv: '6.50',
-//       is_organic: 'N',
-//         style: 'Golden or Blonde Ale',
-//           breweryDB_id: 'WgTa5f'
-// },
-// {
-//   name: '#2 Strong Ale',
-//     abv: '10.00',
-//       is_organic: 'Y',
-//         style: 'Strong Ale',
-//           breweryDB_id: 'sNQLDD'
-// }
-// //////// BREWERY
-// {
-//   breweryDB_id: 'YXDiJk',
-//   name: '#FREEDOM Craft Brewery',
-//   established: '2012',
-//   website: 'http://freedombrew.us'
-// },
-// {
-//   breweryDB_id: 'Klgom2',
-//   name: '\'t Hofbrouwerijke',
-//   established: '1995',
-//   website: 'http://www.thofbrouwerijke.be/'
-// }
-
-
-
+  
 }
 
 
@@ -237,6 +206,44 @@ app.get('/api/v1/breweries/:id/beers', (request, response) => {
 });
 
 
+
+
+
+
+
+
+app.get('/api/v1/breweries', (request, response) => {
+  database('breweries').select()
+    .then(breweries => {
+      if (breweries.length) {
+        response.status(200).json(breweries);
+      } else {
+        response.status(404).json({
+          error: `Could not find any Breweries`
+        });
+      }
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
+
+
+app.get('/api/v1/breweries/:id', (request, response) => {
+  database('breweries').where('id', request.params.id).select()
+    .then(breweries => {
+      if (breweries.length) {
+        response.status(200).json(breweries);
+      } else {
+        response.status(404).json({
+          error: `Could not find any Breweries with ID ${request.params.id}`
+        });
+      }
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
 
 
 
