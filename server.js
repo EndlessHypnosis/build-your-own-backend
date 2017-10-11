@@ -18,6 +18,12 @@ const keys = require('./public/scripts/key');
 
 const fs = require('fs');
 
+const isInt = (value) => {
+ return !isNaN(value) &&
+        parseInt(Number(value)) == value &&
+        !isNaN(parseInt(value, 10));
+}
+
 const cleanBreweryData = (dataToClean) => {
   console.log('clean brewery data called');
   let breweries = dataToClean.data;
@@ -312,6 +318,23 @@ app.post('/api/v1/breweries', (request, response) => {
       response.status(500).json({ error });
     });
 });
+
+// patch data for individual beer
+app.patch('/api/v1/beers/:id', (request, response) =>  {
+  if(!isInt(request.params.id)) {
+    return response.status(422).json({ error: `Invalid ID. Cannot update beer.` });
+  }
+  const newBeerData = request.body;
+  database('beers').where('id', request.params.id)
+  .update(newBeerData)
+  .then(brewery => {
+    response.sendStatus(200);
+  })
+  .catch(error => {
+    response.status(500).json({ error });
+  });
+});
+
 
 // DELETE brewery based on ID
 app.delete('/api/v1/breweries/:id', (request, response) => {
