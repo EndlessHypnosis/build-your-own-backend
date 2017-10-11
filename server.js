@@ -83,38 +83,7 @@ const cleanBeerData = (dataToClean, breweries) => {
       return console.error(error);
     }
   });
-
-  ////// BEERS
-  // {
-  //   name: '#2 Brett Golden Sour',
-  //     abv: '6.50',
-  //       is_organic: 'N',
-  //         style: 'Golden or Blonde Ale',
-  //           breweryDB_id: 'WgTa5f'
-  // },
-  // {
-  //   name: '#2 Strong Ale',
-  //     abv: '10.00',
-  //       is_organic: 'Y',
-  //         style: 'Strong Ale',
-  //           breweryDB_id: 'sNQLDD'
-  // }
-  // //////// BREWERY
-  // {
-  //   breweryDB_id: 'YXDiJk',
-  //   name: '#FREEDOM Craft Brewery',
-  //   established: '2012',
-  //   website: 'http://freedombrew.us'
-  // },
-  // {
-  //   breweryDB_id: 'Klgom2',
-  //   name: '\'t Hofbrouwerijke',
-  //   established: '1995',
-  //   website: 'http://www.thofbrouwerijke.be/'
-  // }
-
-
-
+  
 }
 
 
@@ -188,6 +157,55 @@ app.get('/api/v1/seedbyob', (request, response) => {
   //     response.status(500).json({ error });
   //   });
 });
+
+
+// get all beers
+app.get('/api/v1/beers', (request, response) => {
+  database('beers')
+  .select()
+  .then(beers => {
+    response.status(200).json(beers)
+  })
+  .catch(error => {
+    response.status(500).json({error})
+  })
+});
+
+// get a beer by beer id
+app.get('/api/v1/beers/:id', (request, response) => {
+  database('beers').where('id', request.params.id).select()
+    .then(beers => {
+      if (beers.length) {
+        response.status(200).json(beers);
+      } else {
+        response.status(404).json({
+          error: `Could not find beer with that id ${request.params.id}`
+        });
+      }
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
+
+// get all beers associated with brewery id
+app.get('/api/v1/breweries/:id/beers', (request, response) => {
+  database('beers').where('brewery_id', request.params.id).select()
+    .then(beers => {
+      if (beers.length) {
+        response.status(200).json(beers);
+      } else {
+        response.status(404).json({
+          error: `Could not find beers for that Brewery ${request.params.id}`
+        });
+      }
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
+
+
 
 
 
