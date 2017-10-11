@@ -162,13 +162,13 @@ app.get('/api/v1/seedbyob', (request, response) => {
 // get all beers
 app.get('/api/v1/beers', (request, response) => {
   database('beers')
-  .select()
-  .then(beers => {
-    response.status(200).json(beers)
-  })
-  .catch(error => {
-    response.status(500).json({error})
-  })
+    .select()
+    .then(beers => {
+      response.status(200).json(beers)
+    })
+    .catch(error => {
+      response.status(500).json({ error })
+    })
 });
 
 // get a beer by beer id
@@ -190,46 +190,48 @@ app.get('/api/v1/beers/:id', (request, response) => {
 
 // save new beer to a brewery by brewery id
 app.post('/api/v1/beers', (request, response) => {
+  const beer = request.body;
   for (let requiredParameter of ['name', 'abv', 'is_organic', 'style', 'brewery_id']) {
-    if (!brewery[requiredParameter]) {
+    if (!beer[requiredParameter]) {
       return response
         .status(422)
-        .send({ error: `Expected format: { name: <String>, abv: <decimal>, is_organic: <String>, style: <String>, brewery_id: <integer> }.
-          You're missing a "${requiredParameter}" property.` });
+        .send({
+          error: `Expected format: { name: <String>, abv: <decimal>, is_organic: <String>, style: <String>, brewery_id: <integer> }.
+          You're missing a "${requiredParameter}" property.`
+        });
     }
   }
   database('beers')
-   .insert(
-     {
-       name:request.body.name,
-       abv: request.body.abv,
-       is_organic: request.body.is_organic,
-       style: request.body.style,
-       brewery_id: request.body.brewery_id
-     },
-     'id'
-   )
-   .then(beers => {
-     response.status(201).json(beers);
-   })
-   .catch(error => {
-     response.status(500).json({error});
-   })
+    .insert(beer, '*')
+    .then(beer => {
+      response.status(201).json(beer[0]);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    })
 });
 
 // delete individual beer by beer id
 app.delete('/api/v1/beers/:id', (request, response) => {
-    if (!Number.isInteger(request.body.id)) {
-      return response
-        .status(422)
-        .send({ error: `Inavlid id.  Cannot delete beer` });
-    }
-  database('beers').where('id', request.params.id).delete()
-  .then(response => response.status(204).json())
-  .catch(error => {
-    response.status(500).json({error})
-  })
-})
+  if (!Number.isInteger(parseInt(request.params.id))) {
+    return response
+      .status(422)
+      .send({ error: `Inavlid id.  Cannot delete beer` });
+  }
+  const beerIdToDelete = request.params.id;
+  database('beers')
+    .where('id', beerIdToDelete)
+    .del()
+    .then(beer => {
+      response.sendStatus(200)
+    })
+    .catch(error => {
+      response.status(500).json({ error })
+    });
+});
+
+
+
 
 
 // get all beers associated with brewery id
@@ -255,7 +257,7 @@ app.get('/api/v1/breweries/:id/beers', (request, response) => {
 
 
 
-
+// GET all breweries
 app.get('/api/v1/breweries', (request, response) => {
   database('breweries').select()
     .then(breweries => {
@@ -272,7 +274,7 @@ app.get('/api/v1/breweries', (request, response) => {
     });
 });
 
-
+// GET brewery based on specific ID
 app.get('/api/v1/breweries/:id', (request, response) => {
   database('breweries').where('id', request.params.id).select()
     .then(breweries => {
@@ -290,7 +292,7 @@ app.get('/api/v1/breweries/:id', (request, response) => {
 });
 
 
-
+// POST a new brewery
 app.post('/api/v1/breweries', (request, response) => {
   const brewery = request.body;
 
@@ -311,14 +313,14 @@ app.post('/api/v1/breweries', (request, response) => {
     });
 });
 
-
+// DELETE brewery based on ID
 app.delete('/api/v1/breweries/:id', (request, response) => {
   if (!Number.isInteger(parseInt(request.params.id))) {
     return response
-    .status(422)
-    .send({ error: `Invalid ID. Cannot delete brewery.` });
+      .status(422)
+      .send({ error: `Invalid ID. Cannot delete brewery.` });
   }
-  
+
   const breweryIdToDelete = request.params.id;
 
   database('breweries')
