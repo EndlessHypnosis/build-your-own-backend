@@ -83,7 +83,7 @@ const cleanBeerData = (dataToClean, breweries) => {
       return console.error(error);
     }
   });
-  
+
 }
 
 
@@ -187,6 +187,50 @@ app.get('/api/v1/beers/:id', (request, response) => {
       response.status(500).json({ error });
     });
 });
+
+// save new beer to a brewery by brewery id
+app.post('/api/v1/beers', (request, response) => {
+  for (let requiredParameter of ['name', 'abv', 'is_organic', 'style', 'brewery_id']) {
+    if (!brewery[requiredParameter]) {
+      return response
+        .status(422)
+        .send({ error: `Expected format: { name: <String>, abv: <decimal>, is_organic: <String>, style: <String>, brewery_id: <integer> }.
+          You're missing a "${requiredParameter}" property.` });
+    }
+  }
+  database('beers')
+   .insert(
+     {
+       name:request.body.name,
+       abv: request.body.abv,
+       is_organic: request.body.is_organic,
+       style: request.body.style,
+       brewery_id: request.body.brewery_id
+     },
+     'id'
+   )
+   .then(beers => {
+     response.status(201).json(beers);
+   })
+   .catch(error => {
+     response.status(500).json({error});
+   })
+});
+
+// delete individual beer by beer id
+app.delete('/api/v1/beers/:id', (request, response) => {
+    if (!Number.isInteger(request.body.id)) {
+      return response
+        .status(422)
+        .send({ error: `Inavlid id.  Cannot delete beer` });
+    }
+  database('beers').where('id', request.params.id).delete()
+  .then(response => response.status(204).json())
+  .catch(error => {
+    response.status(500).json({error})
+  })
+})
+
 
 // get all beers associated with brewery id
 app.get('/api/v1/breweries/:id/beers', (request, response) => {
