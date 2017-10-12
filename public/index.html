@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Satisfy" rel="stylesheet">
   <link rel='stylesheet' href='./css/stylesheet.css'>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -13,25 +14,32 @@
 </head>
 <body>
 
-  <header>
-
-    <h1 class='main-title'>Build Your Own Backend Brewery</h1>
-
-  </header>
-
   <main>
 
-    <section class='controls'>
-      <input type='text' class='appName-input' placeholder=' Please enter your app name'/>
-      <input type='email' class='email-input' placeholder=' Please enter your email address'/>
-      <div class='button auth-submit'>Request Token</div>
-      <div class='button' id='btn-fill-data'>Fill Data</div>
+    <section class='background-video-container'>
+      <video poster="../assets/beer-video.mp4" class='background-video'  playsinline autoplay muted loop>
+          <source src="../assets/beer-video.mp4" type="video/webm">
+          <source src="../assets/beer-video.mp4" type="video/mp4">
+      </video>
     </section>
 
-    <section class='response-container'>
-      <p class='token-title'>Token</p>
-      <section class='token-container'>
-        <!-- append token here -->
+    <div class='main-spacer'></div>
+    <section class='main-container'>
+      <div class='main-background'></div>
+      <h1 class='main-title'>Build Your Own Backend Brewery</h1>
+
+      <section class='controls'>
+        <input type='text' class='appName-input' placeholder=' Please enter your app name'/>
+        <input type='email' class='email-input' placeholder=' Please enter your email address'/>
+        <div class='button auth-submit'>Request Token</div>
+        <div class='button' id='btn-fill-data'>Fill Data</div>
+      </section>
+
+      <section class='response-container'>
+        <p class='token-title'>Token</p>
+        <section class='token-container'>
+          <!-- append token here -->
+        </section>
       </section>
     </section>
 
