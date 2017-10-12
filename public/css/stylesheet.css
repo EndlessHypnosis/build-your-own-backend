@@ -5,6 +5,7 @@
 * {
   box-sizing: border-box;
   margin: 0px;
+  font-family: 'Oswald', sans-serif;
 }
 
 
@@ -14,13 +15,14 @@
 
 
 .main-title {
-  font-size: 46px;
+  font-size: 52px;
   color: red;
   color: #666666;
   text-align: center;
   margin-top: 10px;
   font-family: 'Satisfy', cursive;
   line-height: 1.2;
+  transform: rotate(-6deg);
 }
 
 .background-video-container  {
@@ -45,11 +47,18 @@
   width: 400px;
   margin: auto;
   padding: 20px;
-  background: white;
   position: relative;
-  border: solid 2px #666666;
-  /*border: solid 2px red;*/
+  border: solid 4px #666666;
+  box-shadow: 0px 0px 20px white;
   border-radius: 10px;
+}
+
+.red-shadow {
+    box-shadow: 0px 0px 20px red;
+}
+
+.green-shadow {
+    box-shadow: 0px 0px 20px green;
 }
 
 .main-background  {
@@ -59,8 +68,7 @@
   top: 0px;
   left: 0px;
   background: white;
-  border-radius: 10px;
-  opacity: .9;
+  opacity: .88;
   z-index: -1;
 }
 
@@ -84,6 +92,15 @@ input {
   border-radius: 4px;
 }
 
+input:focus {
+  outline: none;
+  box-shadow: 0px 0px 10px green;
+}
+
+input:hover {
+  cursor: pointer;
+}
+
 .button  {
   width: 300px;
   height: 30px;
@@ -98,7 +115,7 @@ input {
 
 .button:hover {
   cursor: pointer;
-  background: red;
+  box-shadow: 0px 0px 10px green;
 }
 
 .response-container {
@@ -129,6 +146,7 @@ input {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  background: white;
 }
 
 .response {
@@ -137,8 +155,14 @@ input {
   font-size: 14px;
   border: none;
   resize: none;
+  margin-top: 2px;
 }
 
 .admin-response {
   font-size: 18px;
+  color: green;
+}
+
+.red  {
+  color: red;
 }

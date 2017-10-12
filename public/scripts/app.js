@@ -31,12 +31,22 @@ const fillData = () => {
             <textarea class='response'>${data.token}</textarea>
             <p class='admin-response'>Admin Access: ${data.adminVerification}</p>
           `)
+          verificationColor(data.adminVerification)
         })
       .catch(err => {
         tokenDiv.append(`Unexpected error`, err)
       })
     }
   })
+
+  const verificationColor = (data) => {
+    if(!data) {
+      $('.admin-response').addClass('red');
+      $('.main-container').addClass('red-shadow');
+    } else {
+      $('.main-container').addClass('green-shadow');
+    }
+  }
 
 
 btnFillData.on('click', fillData);
