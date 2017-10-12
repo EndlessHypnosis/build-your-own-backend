@@ -1,9 +1,8 @@
 
-const breweries = require('../../../breweries.json')
+const breweries = require('../../../breweries.json');
 
 
 exports.seed = (knex, Promise) => {
-  console.log(breweries)
   return knex('beers').del() // delete footnotes first
     .then(() => knex('breweries').del()) // delete all papers
     .then(() => {
@@ -15,7 +14,11 @@ exports.seed = (knex, Promise) => {
 
       return Promise.all(breweriesPromises);
     })
-    .catch(error => console.log(`Error seeding data: ${error}`));
+    .catch(error => {
+      /* eslint-disable no-alert, no-console */
+      console.log(`Error seeding data: ${error}`);
+      /* eslint-enable no-alert, no-console */
+    });
 };
 
 const createBrewery = (knex, brewery) => {
@@ -30,17 +33,17 @@ const createBrewery = (knex, brewery) => {
     )
     .then(breweryId => {
       let beersPromises = [];
-      if(brewery.beers) {
+      if (brewery.beers) {
         brewery.beers.forEach(beer => {
-        let newBeer = Object.assign({}, beer, {brewery_id: breweryId[0]})
-        beersPromises.push(createBeer(knex, newBeer));
-      });
-    }
+          let newBeer = Object.assign({}, beer, { brewery_id: breweryId[0] });
+          beersPromises.push(createBeer(knex, newBeer));
+        });
+      }
       return Promise.all(beersPromises);
     });
 };
 
 const createBeer = (knex, beer) => {
-  delete beer.breweryDB_id
+  delete beer.breweryDB_id;
   return knex('beers').insert(beer);
 };
