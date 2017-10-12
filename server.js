@@ -14,6 +14,12 @@ const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 
+
+const jwt = require('jsonwebtoken');
+// JWT SECRET KEY
+let secretKey = process.env.JWT_SECRET || 'jasonandnicksawesomebyobproject'
+app.set('secretKey', secretKey);
+
 // uncomment this when you need to re-seed the database.
 // const keys = require('./public/scripts/key');
 
@@ -172,6 +178,95 @@ app.get('/api/v1/seedbyob', (request, response) => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+const checkAuth = (request, response, next) => {
+
+  let tokenDoesExist = false;
+  let token;
+
+  // check for token in headers.Authorization
+  if (request.headers.authorization) {
+    tokenDoesExist = true;
+    token = request.headers.authorization;
+  }
+
+  // check for token in body
+  if (request.body.token) {
+    tokenDoesExist = true;
+    token = request.body.token;
+  }
+
+  // check for token in query params
+  if (request.query.token) {
+    tokenDoesExist = true;
+    token = request.query.token;
+  }
+
+
+
+  // if no token exists, respond with 403...not authorized
+  if (!tokenDoesExist) {
+    return response.status(403).send('You must be authorized to use this endpoint.')
+  }
+
+  // if token does exist, verify token
+  if (tokenDoesExist) {
+    jwt.verify(token, app.get('secretKey'), (err, decoded) => {
+      if (err) {
+        return response.status(403).json({ error: 'Invalid Token' });
+      }
+
+      // check if Email ends with @turing.io
+      let emailToVerify = decoded.email;
+      let doesItEndWithTuring = emailToVerify.endsWith("@turing.io");
+      let finalVerification = false;
+
+      if (doesItEndWithTuring) {
+        let subEmail = emailToVerify.replace("@turing.io", "");
+        if (subEmail.length > 0) {
+          finalVerification = true;
+        }
+      }
+      
+      if (!finalVerification) {
+        return response.status(403).json({ error: 'Invalid email address' });
+      }
+
+      // then call next (this is middleware, so passes on execution)
+      next();
+
+    })
+  }
+}
+
+
+
+
+
+// POST for authenticate
+
+app.post('/api/v1/authenticate', (request, response) => {
+  let token = jwt.sign(request.body, app.get('secretKey'), { expiresIn: '48h' })
+  response.status(201).json(token);
+});
+
+
+
+
+
+
+
 // get a beer by beer id
 app.get('/api/v1/beers/:id', (request, response) => {
   database('beers').where('id', request.params.id).select()
@@ -190,8 +285,9 @@ app.get('/api/v1/beers/:id', (request, response) => {
 });
 
 // save new beer to a brewery by brewery id
-app.post('/api/v1/beers', (request, response) => {
+app.post('/api/v1/beers', checkAuth, (request, response) => {
   const beer = request.body;
+  delete beer.token;
   for (let requiredParameter of ['name', 'abv', 'is_organic', 'style', 'brewery_id']) {
     if (!beer[requiredParameter]) {
       return response
@@ -213,7 +309,7 @@ app.post('/api/v1/beers', (request, response) => {
 });
 
 // delete individual beer by beer id
-app.delete('/api/v1/beers/:id', (request, response) => {
+app.delete('/api/v1/beers/:id', checkAuth, (request, response) => {
   if (!Number.isInteger(parseInt(request.params.id))) {
     return response
       .status(422)
@@ -304,9 +400,9 @@ app.get('/api/v1/breweries/:id', (request, response) => {
 
 
 // POST a new brewery
-app.post('/api/v1/breweries', (request, response) => {
+app.post('/api/v1/breweries', checkAuth, (request, response) => {
   const brewery = request.body;
-
+  delete brewery.token;
   for (let requiredParameter of ['name', 'established', 'website']) {
     if (!brewery[requiredParameter]) {
       return response
@@ -326,11 +422,12 @@ app.post('/api/v1/breweries', (request, response) => {
 });
 
 // patch data for individual beer
-app.patch('/api/v1/beers/:id', (request, response) =>  {
+app.patch('/api/v1/beers/:id', checkAuth, (request, response) =>  {
   if(!isInt(request.params.id)) {
     return response.status(422).json({ error: `Invalid ID. Cannot update beer.` });
   }
   const newBeerData = request.body;
+  delete newBeerData.token;
   database('beers').where('id', request.params.id)
   .update(newBeerData, '*')
   .then(beers => {
@@ -343,8 +440,9 @@ app.patch('/api/v1/beers/:id', (request, response) =>  {
 
 
 // put data for a brewery
-app.put('/api/v1/breweries/:id', (request, response) =>  {
+app.put('/api/v1/breweries/:id', checkAuth, (request, response) =>  {
   const newBreweryData = request.body;
+  delete newBreweryData.token;
   if(!isInt(request.params.id)) {
     return response.status(422).json({ error: `Invalid ID. Incorrect ID format.` });
   }
@@ -370,7 +468,7 @@ app.put('/api/v1/breweries/:id', (request, response) =>  {
 });
 
 // DELETE brewery based on ID
-app.delete('/api/v1/breweries/:id', (request, response) => {
+app.delete('/api/v1/breweries/:id', checkAuth, (request, response) => {
   if (!Number.isInteger(parseInt(request.params.id))) {
     return response
       .status(422)
