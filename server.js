@@ -227,20 +227,8 @@ const checkAuth = (request, response, next) => {
         return response.status(403).json({ error: 'Invalid Token' });
       }
 
-      // check if Email ends with @turing.io
-      let emailToVerify = decoded.email;
-      let doesItEndWithTuring = emailToVerify.endsWith("@turing.io");
-      let finalVerification = false;
-
-      if (doesItEndWithTuring) {
-        let subEmail = emailToVerify.replace("@turing.io", "");
-        if (subEmail.length > 0) {
-          finalVerification = true;
-        }
-      }
-      
-      if (!finalVerification) {
-        return response.status(403).json({ error: 'Invalid email address' });
+      if (!decoded.admin) {
+        return response.status(403).json({ error: 'Authorization Error. You must have admin rights to access this resource.' });
       }
 
       // then call next (this is middleware, so passes on execution)
@@ -257,7 +245,30 @@ const checkAuth = (request, response, next) => {
 // POST for authenticate
 
 app.post('/api/v1/authenticate', (request, response) => {
-  let token = jwt.sign(request.body, app.get('secretKey'), { expiresIn: '48h' })
+
+  const { appName, email } = request.body;
+
+  // check if appName exists in payload
+  if (!appName || !email) {
+    return response.status(403).json({error: 'Invalid Request. Please enter valid appName and email'})
+  }
+
+  // check if Email ends with @turing.io
+  let doesItEndWithTuring = email.endsWith("@turing.io");
+  let adminVerification = false;
+
+  if (doesItEndWithTuring) {
+    let subEmail = email.replace("@turing.io", "");
+    if (subEmail.length > 0) {
+      adminVerification = true;
+    }
+  }
+
+  // add {admin: true} to request body before passing payload into token signing.
+  let newTokenPayload = Object.assign({}, request.body, { admin: adminVerification })
+
+
+  let token = jwt.sign(newTokenPayload, app.get('secretKey'), { expiresIn: '48h' })
   response.status(201).json(token);
 });
 
