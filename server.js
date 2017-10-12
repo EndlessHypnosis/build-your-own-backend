@@ -26,18 +26,17 @@ app.set('secretKey', process.env.JWT_SECRET);
 
 const keys = {
   apiKey: process.env.BREW_API_KEY
-}
+};
 
 const fs = require('fs');
 
 const isInt = (value) => {
- return !isNaN(value) &&
-        parseInt(Number(value)) == value &&
-        !isNaN(parseInt(value, 10));
-}
+  return !isNaN(value) &&
+    parseInt(Number(value)) == value &&
+    !isNaN(parseInt(value, 10));
+};
 
 const cleanBreweryData = (dataToClean) => {
-  console.log('clean brewery data called');
   let breweries = dataToClean.data;
   let cleanedBreweries = breweries.map(brewery => {
     let newBrewery = Object.assign({}, {
@@ -50,7 +49,7 @@ const cleanBreweryData = (dataToClean) => {
   });
   // use the cleanedbreweries
   fetchBeers(cleanBeerData, cleanedBreweries);
-}
+};
 
 
 const cleanBeerData = (dataToClean, breweries) => {
@@ -66,9 +65,6 @@ const cleanBeerData = (dataToClean, breweries) => {
     return newBeer;
   });
   //return cleanedBeerData;
-  console.log('### CLEANED BEERS:', cleanedBeerData.length);
-  console.log('### CLEANED BREWERIES:', breweries.length);
-
 
   let BreweriesWithBeers = breweries.map((brewery, index) => {
 
@@ -81,8 +77,8 @@ const cleanBeerData = (dataToClean, breweries) => {
         beers: []
       });
 
-      newBrewery.beers.push(cleanedBeerData[index * 2])
-      newBrewery.beers.push(cleanedBeerData[(index * 2) + 1])
+      newBrewery.beers.push(cleanedBeerData[index * 2]);
+      newBrewery.beers.push(cleanedBeerData[(index * 2) + 1]);
 
       return newBrewery;
 
@@ -98,11 +94,13 @@ const cleanBeerData = (dataToClean, breweries) => {
 
   fs.writeFile('./breweries.json', outputJson, 'utf8', (error) => {
     if (error) {
+      /* eslint-disable no-alert, no-console */
       return console.error(error);
+      /* eslint-enable no-alert, no-console */
     }
   });
 
-}
+};
 
 
 const fetchBeers = (callback, breweryData) => {
@@ -121,11 +119,12 @@ const fetchBeers = (callback, breweryData) => {
     });
 
   }).on('error', function (e) {
-    console.log("Got an error: ", e);
+    /* eslint-disable no-alert, no-console */
+    console.log('Got an error: ', e);
+    /* eslint-enable no-alert, no-console */
   });
-  // console.log('cleanedBeerscleanedBeers:', cleanedBeers);
   // return cleanedBeers;
-}
+};
 
 
 const fetchBreweries = (callback) => {
@@ -146,22 +145,23 @@ const fetchBreweries = (callback) => {
     });
 
   }).on('error', function (e) {
-    console.log("Got an error: ", e);
+    /* eslint-disable no-alert, no-console */
+    console.log('Got an error: ', e);
+    /* eslint-enable no-alert, no-console */
   });
-}
+};
 
 
 app.get('/api/v1/seedbyob', (request, response) => {
 
-  console.log('it worked');
-  console.log('your API KEy:', keys.apiKey);
 
   // http.get(`http://api.brewerydb.com/v2/breweries?key=${keys.apiKey}`, data => {
   //   console.log('your data is:', data)
   // })
 
   fetchBreweries(cleanBreweryData);
-  console.log('cleaned brewery data');
+
+  response.sendStatus(200);
 
   // let cleanedBeers = fetchBeers();
 
@@ -218,7 +218,7 @@ const checkAuth = (request, response, next) => {
 
   // if no token exists, respond with 403...not authorized
   if (!tokenDoesExist) {
-    return response.status(403).json({error: 'You must be authorized to use this endpoint.'})
+    return response.status(403).json({ error: 'You must be authorized to use this endpoint.' });
   }
 
   // if token does exist, verify token
@@ -235,9 +235,9 @@ const checkAuth = (request, response, next) => {
       // then call next (this is middleware, so passes on execution)
       next();
 
-    })
+    });
   }
-}
+};
 
 
 
@@ -248,30 +248,28 @@ app.post('/api/v1/authenticate', (request, response) => {
 
   const { appName, email } = request.body;
 
-  console.log('SECRET:', app.get('secretKey'))
-
   // check if appName exists in payload
   if (!appName || !email) {
-    return response.status(400).json({error: 'Invalid Request. Please enter valid appName and email'})
+    return response.status(400).json({ error: 'Invalid Request. Please enter valid appName and email' });
   }
 
   // check if Email ends with @turing.io
-  let doesItEndWithTuring = email.endsWith("@turing.io");
+  let doesItEndWithTuring = email.endsWith('@turing.io');
   let adminVerification = false;
 
   if (doesItEndWithTuring) {
-    let subEmail = email.replace("@turing.io", "");
+    let subEmail = email.replace('@turing.io', '');
     if (subEmail.length > 0) {
       adminVerification = true;
     }
   }
 
   // add {admin: true} to request body before passing payload into token signing.
-  let newTokenPayload = Object.assign({}, request.body, { admin: adminVerification })
+  let newTokenPayload = Object.assign({}, request.body, { admin: adminVerification });
 
 
-  let token = jwt.sign(newTokenPayload, app.get('secretKey'), { expiresIn: '48h' })
-  response.status(201).json({token, adminVerification});
+  let token = jwt.sign(newTokenPayload, app.get('secretKey'), { expiresIn: '48h' });
+  response.status(201).json({ token, adminVerification });
 });
 
 
@@ -282,25 +280,23 @@ app.get('/api/v1/beers', (request, response) => {
   let userAbv = request.query.abv;
   let myDataBase;
 
-  console.log('SECRET:', app.get('secretKey'))
-  
 
-  if(userAbv) {
+  if (userAbv) {
     if (isNaN(userAbv)) {
-      return response.status(422).json({ error: `Invalid abv param. Please enter valid number.` });
+      return response.status(422).json({ error: 'Invalid abv param. Please enter valid number.' });
     }
-    myDataBase = database('beers').where('abv', '>=', request.query.abv)
+    myDataBase = database('beers').where('abv', '>=', request.query.abv);
   } else {
-    myDataBase = database('beers')
+    myDataBase = database('beers');
   }
   myDataBase.select()
     .then(beers => {
       if (!beers.length) {
         return response.sendStatus(404).json({
-          error: `Could not find any beers`
+          error: 'Could not find any beers'
         });
       }
-      response.status(200).json(beers)
+      response.status(200).json(beers);
     })
     .catch(error => {
       response.status(500).json({ error });
@@ -318,11 +314,11 @@ app.get('/api/v1/beers/:id', (request, response) => {
         });
       }
       response.status(200).json(beers);
-    })  
+    })
     .catch(error => {
       response.status(500).json({ error });
-    });  
-});    
+    });
+});
 
 
 // GET /breweries/:id/beers endpoint to request all beers associated with a brewery
@@ -351,7 +347,7 @@ app.post('/api/v1/beers', checkAuth, (request, response) => {
         .json({
           error: `Expected format: { name: <String>, abv: <decimal>, is_organic: <String>, style: <String>, brewery_id: <integer> }.
           You're missing a "${requiredParameter}" property.`
-        });  
+        });
     }
   }
   database('beers')
@@ -359,21 +355,21 @@ app.post('/api/v1/beers', checkAuth, (request, response) => {
     .then(beers => {
       if (!beers[0]) {
         return response.status(422).json({
-          error: `Could not create beer. Unexpected error`
+          error: 'Could not create beer. Unexpected error'
         });
       }
       response.status(201).json(beers[0]);
-    })  
+    })
     .catch(error => {
       response.status(500).json({ error });
-    })  
-});    
+    });
+});
 
 
 // PATCH /beers/:id endpoint to update partial information of a specific beer
 app.patch('/api/v1/beers/:id', checkAuth, (request, response) => {
   if (!isInt(request.params.id)) {
-    return response.status(422).json({ error: `Invalid ID. Cannot update beer.` });
+    return response.status(422).json({ error: 'Invalid ID. Cannot update beer.' });
   }
   const newBeerData = request.body;
   delete newBeerData.token;
@@ -383,7 +379,7 @@ app.patch('/api/v1/beers/:id', checkAuth, (request, response) => {
       if (!beers[0]) {
         return response.status(422).json({
           error: 'Could not update beer. Unexpected error'
-        })
+        });
       }
       response.status(200).json(beers[0]);
     })
@@ -395,19 +391,19 @@ app.patch('/api/v1/beers/:id', checkAuth, (request, response) => {
 // DELETE /beers/:id endpoint to remove an individual beer by id
 app.delete('/api/v1/beers/:id', checkAuth, (request, response) => {
   if (!isInt(request.params.id)) {
-    return response.status(422).json({ error: `Invalid ID. Cannot delete beer.` });
-  }    
+    return response.status(422).json({ error: 'Invalid ID. Cannot delete beer.' });
+  }
   const beerIdToDelete = request.params.id;
   database('beers')
     .where('id', beerIdToDelete)
     .delete()
-    .then(beer => {
+    .then(() => {
       response.sendStatus(204);
-    })  
+    })
     .catch(error => {
       response.status(500).json({ error });
-    });  
-});    
+    });
+});
 
 // GET /breweries endpoint retrieves all the breweries
 app.get('/api/v1/breweries', (request, response) => {
@@ -415,9 +411,9 @@ app.get('/api/v1/breweries', (request, response) => {
     .then(breweries => {
       if (!breweries.length) {
         return response.status(404).json({
-          error: `Could not find any Breweries`
+          error: 'Could not find any Breweries'
         });
-      } 
+      }
       response.status(200).json(breweries);
     })
     .catch(error => {
@@ -448,64 +444,68 @@ app.post('/api/v1/breweries', checkAuth, (request, response) => {
   for (let requiredParameter of ['name', 'established', 'website']) {
     if (!brewery[requiredParameter]) {
       return response.status(422)
-        .json({ error: `Expected format: { name: <String>, established: <String>, website: <String> }. You're missing a
-        "${requiredParameter}" property.` });
+        .json({
+          error: `Expected format: { name: <String>, established: <String>, website: <String> }. You're missing a
+        "${requiredParameter}" property.`
+        });
     }
   }
   database('breweries')
-  .insert(brewery, '*')
-  .then(breweries => {
-    if (!breweries[0]) {
-      return response.status(422).json({
-        error: 'Could not create brewery. Unexpected error'
-      });
-    }
-    response.status(201).json(breweries[0]);
-  })
-  .catch(error => {
-    response.status(500).json({ error });
-  });
+    .insert(brewery, '*')
+    .then(breweries => {
+      if (!breweries[0]) {
+        return response.status(422).json({
+          error: 'Could not create brewery. Unexpected error'
+        });
+      }
+      response.status(201).json(breweries[0]);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 // PUT /breweries/:id updates the entire record for a given brewery by id
-app.put('/api/v1/breweries/:id', checkAuth, (request, response) =>  {
+app.put('/api/v1/breweries/:id', checkAuth, (request, response) => {
   const newBreweryData = request.body;
   delete newBreweryData.token;
-  if(!isInt(request.params.id)) {
-    return response.status(422).json({ error: `Invalid ID. Incorrect ID format.` });
+  if (!isInt(request.params.id)) {
+    return response.status(422).json({ error: 'Invalid ID. Incorrect ID format.' });
   }
   for (let requiredParameter of ['name', 'established', 'website']) {
     if (!newBreweryData[requiredParameter]) {
       return response.status(422)
-        .json({ error: `Expected format: { name: <String>, established: <String>, website: <String> }.
-          You're missing a "${requiredParameter}" property.` });
+        .json({
+          error: `Expected format: { name: <String>, established: <String>, website: <String> }.
+          You're missing a "${requiredParameter}" property.`
+        });
     }
   }
   database('breweries').where('id', request.params.id)
-  .update(newBreweryData, '*')
-  .then(brewery => {
-    if(!brewery.length) {
-      return response.status(422).json({
-        error: 'Unable to update brewery. Unexpected Error.'
-      })
-    }
-    response.status(200).json(brewery[0]);
-  })
-  .catch(error => {
-    response.status(500).json({ error });
-  });
+    .update(newBreweryData, '*')
+    .then(brewery => {
+      if (!brewery.length) {
+        return response.status(422).json({
+          error: 'Unable to update brewery. Unexpected Error.'
+        });
+      }
+      response.status(200).json(brewery[0]);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 // DELETE /breweries endpoint deletes a brewery based on id
 app.delete('/api/v1/breweries/:id', checkAuth, (request, response) => {
   if (!isInt(request.params.id)) {
-    return response.status(422).json({ error: `Invalid ID. Cannot delete brewery.` });
+    return response.status(422).json({ error: 'Invalid ID. Cannot delete brewery.' });
   }
   const breweryIdToDelete = request.params.id;
   database('breweries')
     .where('id', breweryIdToDelete)
     .delete()
-    .then(brewery => {
+    .then(() => {
       response.sendStatus(204);
     })
     .catch(error => {
@@ -515,7 +515,9 @@ app.delete('/api/v1/breweries/:id', checkAuth, (request, response) => {
 
 
 app.listen(app.get('port'), () => {
+  /* eslint-disable no-alert, no-console */
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
+  /* eslint-enable no-alert, no-console */
 });
 
 module.exports = app;
