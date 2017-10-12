@@ -28,8 +28,8 @@ const fillData = () => {
       .then(data => data.json())
       .then(data => {
           tokenDiv.append(`
-            <p>${data.token}</p><br>
-            <p>${data.adminVerification}</p>
+            <textarea class='response'>${data.token}</textarea>
+            <p class='admin-response'>Admin Access: ${data.adminVerification}</p>
           `)
         })
       .catch(err => {
