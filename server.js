@@ -14,17 +14,18 @@ const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 
+require('dotenv').config();
 
 const jwt = require('jsonwebtoken');
 // JWT SECRET KEY
-let secretKey = process.env.JWT_SECRET || 'jasonandnicksawesomebyobproject'
-app.set('secretKey', secretKey);
+// let secretKey = process.env.JWT_SECRET || 'jasonandnicksawesomebyobproject'
+app.set('secretKey', process.env.JWT_SECRET);
 
 // uncomment this when you need to re-seed the database.
 // const keys = require('./public/scripts/key');
 
 const keys = {
-  apiKey: 'INVALID KEY'
+  apiKey: process.env.BREW_API_KEY
 }
 
 const fs = require('fs');
@@ -247,6 +248,8 @@ app.post('/api/v1/authenticate', (request, response) => {
 
   const { appName, email } = request.body;
 
+  console.log('SECRET:', app.get('secretKey'))
+
   // check if appName exists in payload
   if (!appName || !email) {
     return response.status(400).json({error: 'Invalid Request. Please enter valid appName and email'})
@@ -278,6 +281,9 @@ app.post('/api/v1/authenticate', (request, response) => {
 app.get('/api/v1/beers', (request, response) => {
   let userAbv = request.query.abv;
   let myDataBase;
+
+  console.log('SECRET:', app.get('secretKey'))
+  
 
   if(userAbv) {
     if (isNaN(userAbv)) {
