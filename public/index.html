@@ -13,13 +13,25 @@
 <body>
   <h1>Build Your Own Backend Brewery</h1>
 
+  <input type='text' class='appName-input' placeholder='Please enter your app name'/>
+
+  <input type='email' class='email-input' placeholder='Please enter your email address'/>
+
+  <button class='auth-submit'>Request Token</button>
+
   <button id='btn-fill-data'>Fill Data</button>
+
+  <div class='token-container'>
+
+  </div>
+
+
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <!--  data-main attribute tells require.js to load
         scripts/main.js after require.js loads. -->
   <!-- <script data-main="scripts/main" src="scripts/require.js"></script> -->
-  
+
   <script src="scripts/app.js"></script>
   <script src="scripts/key.js"></script>
 

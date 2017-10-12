@@ -269,7 +269,7 @@ app.post('/api/v1/authenticate', (request, response) => {
 
 
   let token = jwt.sign(newTokenPayload, app.get('secretKey'), { expiresIn: '48h' })
-  response.status(201).json(token);
+  response.status(201).json({token, adminVerification});
 });
 
 
