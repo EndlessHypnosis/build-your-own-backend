@@ -4,26 +4,38 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
+  <link rel='stylesheet' href='./css/stylesheet.css'>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
 
   <title>Build Your Own Backend</title>
 </head>
 <body>
-  <h1>Build Your Own Backend Brewery</h1>
 
-  <input type='text' class='appName-input' placeholder='Please enter your app name'/>
+  <header>
 
-  <input type='email' class='email-input' placeholder='Please enter your email address'/>
+    <h1 class='main-title'>Build Your Own Backend Brewery</h1>
 
-  <button class='auth-submit'>Request Token</button>
+  </header>
 
-  <button id='btn-fill-data'>Fill Data</button>
+  <main>
 
-  <div class='token-container'>
+    <section class='controls'>
+      <input type='text' class='appName-input' placeholder=' Please enter your app name'/>
+      <input type='email' class='email-input' placeholder=' Please enter your email address'/>
+      <div class='button auth-submit'>Request Token</div>
+      <div class='button' id='btn-fill-data'>Fill Data</div>
+    </section>
 
-  </div>
+    <section class='response-container'>
+      <p class='token-title'>Token</p>
+      <section class='token-container'>
+        <!-- append token here -->
+      </section>
+    </section>
+
+  </main>
 
 
 
