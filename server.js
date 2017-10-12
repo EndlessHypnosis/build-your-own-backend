@@ -217,7 +217,7 @@ const checkAuth = (request, response, next) => {
 
   // if no token exists, respond with 403...not authorized
   if (!tokenDoesExist) {
-    return response.status(403).send('You must be authorized to use this endpoint.')
+    return response.status(403).json({error: 'You must be authorized to use this endpoint.'})
   }
 
   // if token does exist, verify token
@@ -242,8 +242,7 @@ const checkAuth = (request, response, next) => {
 
 
 
-// POST for authenticate
-
+// Authentication endpoint for JWT Token signing
 app.post('/api/v1/authenticate', (request, response) => {
 
   const { appName, email } = request.body;
@@ -278,8 +277,12 @@ app.post('/api/v1/authenticate', (request, response) => {
 // GET /beers endpoint with optional query param: abv
 app.get('/api/v1/beers', (request, response) => {
   let userAbv = request.query.abv;
-  let myDataBase
+  let myDataBase;
+
   if(userAbv) {
+    if (isNaN(userAbv)) {
+      return response.status(422).json({ error: `Invalid abv param. Please enter valid number.` });
+    }
     myDataBase = database('beers').where('abv', '>=', request.query.abv)
   } else {
     myDataBase = database('beers')
@@ -468,7 +471,7 @@ app.put('/api/v1/breweries/:id', checkAuth, (request, response) =>  {
   for (let requiredParameter of ['name', 'established', 'website']) {
     if (!newBreweryData[requiredParameter]) {
       return response.status(422)
-        .send({ error: `Expected format: { name: <String>, established: <String>, website: <String> }.
+        .json({ error: `Expected format: { name: <String>, established: <String>, website: <String> }.
           You're missing a "${requiredParameter}" property.` });
     }
   }
