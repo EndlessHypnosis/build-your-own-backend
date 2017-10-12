@@ -217,7 +217,7 @@ const checkAuth = (request, response, next) => {
 
   // if no token exists, respond with 403...not authorized
   if (!tokenDoesExist) {
-    return response.status(403).send('You must be authorized to use this endpoint.')
+    return response.status(403).json({error: 'You must be authorized to use this endpoint.'})
   }
 
   // if token does exist, verify token
@@ -242,15 +242,14 @@ const checkAuth = (request, response, next) => {
 
 
 
-// POST for authenticate
-
+// Authentication endpoint for JWT Token signing
 app.post('/api/v1/authenticate', (request, response) => {
 
   const { appName, email } = request.body;
 
   // check if appName exists in payload
   if (!appName || !email) {
-    return response.status(403).json({error: 'Invalid Request. Please enter valid appName and email'})
+    return response.status(400).json({error: 'Invalid Request. Please enter valid appName and email'})
   }
 
   // check if Email ends with @turing.io
@@ -275,99 +274,26 @@ app.post('/api/v1/authenticate', (request, response) => {
 
 
 
-
-
-
-// get a beer by beer id
-app.get('/api/v1/beers/:id', (request, response) => {
-  database('beers').where('id', request.params.id).select()
-    .then(beers => {
-      if (beers.length) {
-        response.status(200).json(beers);
-      } else {
-        response.status(404).json({
-          error: `Could not find beer with that id ${request.params.id}`
-        });
-      }
-    })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
-});
-
-// save new beer to a brewery by brewery id
-app.post('/api/v1/beers', checkAuth, (request, response) => {
-  const beer = request.body;
-  delete beer.token;
-  for (let requiredParameter of ['name', 'abv', 'is_organic', 'style', 'brewery_id']) {
-    if (!beer[requiredParameter]) {
-      return response
-        .status(422)
-        .send({
-          error: `Expected format: { name: <String>, abv: <decimal>, is_organic: <String>, style: <String>, brewery_id: <integer> }.
-          You're missing a "${requiredParameter}" property.`
-        });
-    }
-  }
-  database('beers')
-    .insert(beer, '*')
-    .then(beer => {
-      response.status(201).json(beer[0]);
-    })
-    .catch(error => {
-      response.status(500).json({ error });
-    })
-});
-
-// delete individual beer by beer id
-app.delete('/api/v1/beers/:id', checkAuth, (request, response) => {
-  if (!Number.isInteger(parseInt(request.params.id))) {
-    return response
-      .status(422)
-      .send({ error: `Inavlid id.  Cannot delete beer` });
-  }
-  const beerIdToDelete = request.params.id;
-  database('beers')
-    .where('id', beerIdToDelete)
-    .del()
-    .then(beer => {
-      response.sendStatus(200)
-    })
-    .catch(error => {
-      response.status(500).json({ error })
-    });
-});
-
-
-// get all beers associated with brewery id
-app.get('/api/v1/breweries/:id/beers', (request, response) => {
-  database('beers').where('brewery_id', request.params.id).select()
-    .then(beers => {
-      if (beers.length) {
-        response.status(200).json(beers);
-      } else {
-        response.status(404).json({
-          error: `Could not find beers for that Brewery ${request.params.id}`
-        });
-      }
-    })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
-});
-
-
-// get all beers with optional query param by ABV
+// GET /beers endpoint with optional query param: abv
 app.get('/api/v1/beers', (request, response) => {
   let userAbv = request.query.abv;
-  let myDataBase
+  let myDataBase;
+
   if(userAbv) {
+    if (isNaN(userAbv)) {
+      return response.status(422).json({ error: `Invalid abv param. Please enter valid number.` });
+    }
     myDataBase = database('beers').where('abv', '>=', request.query.abv)
   } else {
     myDataBase = database('beers')
   }
   myDataBase.select()
     .then(beers => {
+      if (!beers.length) {
+        return response.sendStatus(404).json({
+          error: `Could not find any beers`
+        });
+      }
       response.status(200).json(beers)
     })
     .catch(error => {
@@ -375,82 +301,167 @@ app.get('/api/v1/beers', (request, response) => {
     });
 });
 
-// GET all breweries
-app.get('/api/v1/breweries', (request, response) => {
-  database('breweries').select()
-    .then(breweries => {
-      if (breweries.length) {
-        response.status(200).json(breweries);
-      } else {
-        response.status(404).json({
-          error: `Could not find any Breweries`
+
+// GET /beers/:id endpoint to request a specific beer by id
+app.get('/api/v1/beers/:id', (request, response) => {
+  database('beers').where('id', request.params.id).select()
+    .then(beers => {
+      if (!beers.length) {
+        return response.status(404).json({
+          error: `Could not find beer with id ${request.params.id}`
         });
       }
+      response.status(200).json(beers);
+    })  
+    .catch(error => {
+      response.status(500).json({ error });
+    });  
+});    
+
+
+// GET /breweries/:id/beers endpoint to request all beers associated with a brewery
+app.get('/api/v1/breweries/:id/beers', (request, response) => {
+  database('beers').where('brewery_id', request.params.id).select()
+    .then(beers => {
+      if (!beers.length) {
+        return response.status(404).json({
+          error: `Could not find any beers for brewery with id ${request.params.id}`
+        });
+      }
+      response.status(200).json(beers);
     })
     .catch(error => {
       response.status(500).json({ error });
     });
 });
 
-// GET brewery based on specific ID
-app.get('/api/v1/breweries/:id', (request, response) => {
-  database('breweries').where('id', request.params.id).select()
-    .then(breweries => {
-      if (breweries.length) {
-        response.status(200).json(breweries);
-      } else {
-        response.status(404).json({
-          error: `Could not find any Breweries with ID ${request.params.id}`
-        });
-      }
-    })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
-});
-
-
-// POST a new brewery
-app.post('/api/v1/breweries', checkAuth, (request, response) => {
-  const brewery = request.body;
-  delete brewery.token;
-  for (let requiredParameter of ['name', 'established', 'website']) {
-    if (!brewery[requiredParameter]) {
-      return response
-        .status(422)
-        .send({ error: `Expected format: { name: <String>, established: <String>, website: <String> }. You're missing a
-        "${requiredParameter}" property.` });
+// POST /beers endpoint saves a new beer to a brewery
+app.post('/api/v1/beers', checkAuth, (request, response) => {
+  const beer = request.body;
+  delete beer.token;
+  for (let requiredParameter of ['name', 'abv', 'is_organic', 'style', 'brewery_id']) {
+    if (!beer[requiredParameter]) {
+      return response.status(422)
+        .json({
+          error: `Expected format: { name: <String>, abv: <decimal>, is_organic: <String>, style: <String>, brewery_id: <integer> }.
+          You're missing a "${requiredParameter}" property.`
+        });  
     }
   }
-
-  database('breweries').insert(brewery, '*')
-    .then(brewery => {
-      response.status(201).json(brewery[0]);
-    })
+  database('beers')
+    .insert(beer, '*')
+    .then(beers => {
+      if (!beers[0]) {
+        return response.status(422).json({
+          error: `Could not create beer. Unexpected error`
+        });
+      }
+      response.status(201).json(beers[0]);
+    })  
     .catch(error => {
       response.status(500).json({ error });
-    });
-});
+    })  
+});    
 
-// patch data for individual beer
-app.patch('/api/v1/beers/:id', checkAuth, (request, response) =>  {
-  if(!isInt(request.params.id)) {
+
+// PATCH /beers/:id endpoint to update partial information of a specific beer
+app.patch('/api/v1/beers/:id', checkAuth, (request, response) => {
+  if (!isInt(request.params.id)) {
     return response.status(422).json({ error: `Invalid ID. Cannot update beer.` });
   }
   const newBeerData = request.body;
   delete newBeerData.token;
   database('beers').where('id', request.params.id)
-  .update(newBeerData, '*')
-  .then(beers => {
-    response.status(200).json(beers[0]);
+    .update(newBeerData, '*')
+    .then(beers => {
+      if (!beers[0]) {
+        return response.status(422).json({
+          error: 'Could not update beer. Unexpected error'
+        })
+      }
+      response.status(200).json(beers[0]);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
+
+// DELETE /beers/:id endpoint to remove an individual beer by id
+app.delete('/api/v1/beers/:id', checkAuth, (request, response) => {
+  if (!isInt(request.params.id)) {
+    return response.status(422).json({ error: `Invalid ID. Cannot delete beer.` });
+  }    
+  const beerIdToDelete = request.params.id;
+  database('beers')
+    .where('id', beerIdToDelete)
+    .delete()
+    .then(beer => {
+      response.sendStatus(204);
+    })  
+    .catch(error => {
+      response.status(500).json({ error });
+    });  
+});    
+
+// GET /breweries endpoint retrieves all the breweries
+app.get('/api/v1/breweries', (request, response) => {
+  database('breweries').select()
+    .then(breweries => {
+      if (!breweries.length) {
+        return response.status(404).json({
+          error: `Could not find any Breweries`
+        });
+      } 
+      response.status(200).json(breweries);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
+
+// GET /breweries/:id endpoint retrieves specific brewery based on id
+app.get('/api/v1/breweries/:id', (request, response) => {
+  database('breweries').where('id', request.params.id).select()
+    .then(breweries => {
+      if (!breweries.length) {
+        return response.status(404).json({
+          error: `Could not find any Breweries with ID ${request.params.id}`
+        });
+      }
+      response.status(200).json(breweries);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
+
+// POST /breweries endpoint creates a new brewery
+app.post('/api/v1/breweries', checkAuth, (request, response) => {
+  const brewery = request.body;
+  delete brewery.token;
+  for (let requiredParameter of ['name', 'established', 'website']) {
+    if (!brewery[requiredParameter]) {
+      return response.status(422)
+        .json({ error: `Expected format: { name: <String>, established: <String>, website: <String> }. You're missing a
+        "${requiredParameter}" property.` });
+    }
+  }
+  database('breweries')
+  .insert(brewery, '*')
+  .then(breweries => {
+    if (!breweries[0]) {
+      return response.status(422).json({
+        error: 'Could not create brewery. Unexpected error'
+      });
+    }
+    response.status(201).json(breweries[0]);
   })
   .catch(error => {
     response.status(500).json({ error });
   });
 });
 
-
-// put data for a brewery
+// PUT /breweries/:id updates the entire record for a given brewery by id
 app.put('/api/v1/breweries/:id', checkAuth, (request, response) =>  {
   const newBreweryData = request.body;
   delete newBreweryData.token;
@@ -459,46 +470,42 @@ app.put('/api/v1/breweries/:id', checkAuth, (request, response) =>  {
   }
   for (let requiredParameter of ['name', 'established', 'website']) {
     if (!newBreweryData[requiredParameter]) {
-      return response
-        .status(422)
-        .send({ error: `Expected format: { name: <String>, established: <String>, website: <String> }.
+      return response.status(422)
+        .json({ error: `Expected format: { name: <String>, established: <String>, website: <String> }.
           You're missing a "${requiredParameter}" property.` });
     }
   }
   database('breweries').where('id', request.params.id)
   .update(newBreweryData, '*')
   .then(brewery => {
-    if(brewery.length > 0) {
-    return response.status(200).json(brewery[0]);
+    if(!brewery.length) {
+      return response.status(422).json({
+        error: 'Unable to update brewery. Unexpected Error.'
+      })
     }
-    response.status(422).json('Invaild ID.  No brewery found with that ID.')
+    response.status(200).json(brewery[0]);
   })
   .catch(error => {
     response.status(500).json({ error });
   });
 });
 
-// DELETE brewery based on ID
+// DELETE /breweries endpoint deletes a brewery based on id
 app.delete('/api/v1/breweries/:id', checkAuth, (request, response) => {
-  if (!Number.isInteger(parseInt(request.params.id))) {
-    return response
-      .status(422)
-      .send({ error: `Invalid ID. Cannot delete brewery.` });
+  if (!isInt(request.params.id)) {
+    return response.status(422).json({ error: `Invalid ID. Cannot delete brewery.` });
   }
-
   const breweryIdToDelete = request.params.id;
-
   database('breweries')
     .where('id', breweryIdToDelete)
-    .del()
+    .delete()
     .then(brewery => {
-      response.sendStatus(200);
+      response.sendStatus(204);
     })
     .catch(error => {
       response.status(500).json({ error });
     });
 });
-
 
 
 app.listen(app.get('port'), () => {
