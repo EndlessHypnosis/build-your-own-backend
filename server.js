@@ -528,6 +528,8 @@ app.delete('/api/v1/breweries/:id', checkAuth, (request, response) => {
       response.sendStatus(204);
     })
     .catch(error => {
+      console.log('CATCH DELETE ERROR:', error);
+      
       response.status(500).json({ error });
     });
 });
