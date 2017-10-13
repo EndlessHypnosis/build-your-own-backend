@@ -236,27 +236,42 @@ describe('API Routes', () => {
   describe('POST /api/v1/beers', () => {
 
     it('should create a new beer successfully', done => {
+      // check record count before posting
       chai.request(server)
-        .post(`/api/v1/beers?token=${key}`)
-        .send({
-          'name': 'test beer 1',
-          'abv': '10.3',
-          'is_organic': 'Y',
-          'style': 'Belgin',
-          'brewery_id': breweryID
-        })
+        .get('/api/v1/beers')
         .end((error, response) => {
-          response.should.have.status(201);
-          response.should.be.json;
-          response.body.should.be.a('object');
-          response.body.should.have.property('id');
-          response.body.should.have.property('name');
-          response.body.should.have.property('abv');
-          response.body.should.have.property('is_organic');
-          response.body.name.should.equal('test beer 1');
-          response.body.abv.should.equal('10.30');
-          response.body.brewery_id.should.equal(breweryID);
-          done();
+          response.body.should.have.length(50);
+
+          // post new record
+          chai.request(server)
+            .post(`/api/v1/beers?token=${key}`)
+            .send({
+              'name': 'test beer 1',
+              'abv': '10.3',
+              'is_organic': 'Y',
+              'style': 'Belgin',
+              'brewery_id': breweryID
+            })
+            .end((error, response) => {
+              response.should.have.status(201);
+              response.should.be.json;
+              response.body.should.be.a('object');
+              response.body.should.have.property('id');
+              response.body.should.have.property('name');
+              response.body.should.have.property('abv');
+              response.body.should.have.property('is_organic');
+              response.body.name.should.equal('test beer 1');
+              response.body.abv.should.equal('10.30');
+              response.body.brewery_id.should.equal(breweryID);
+
+              // check record count again
+              chai.request(server)
+                .get('/api/v1/beers')
+                .end((error, response) => {
+                  response.body.should.have.length(51);
+                  done();
+                });
+            });
         });
     });
 
@@ -277,6 +292,71 @@ describe('API Routes', () => {
     it('should return a 403 error with incorrect token', done => {
       chai.request(server)
         .post('/api/v1/beers?token=203')
+        .end((error, response) => {
+          response.should.have.status(403);
+          done();
+        });
+    });
+
+  });
+
+
+  describe('POST /api/v1/breweries', () => {
+
+    it('should create a new brewery successfully', done => {
+      // check record count before posting
+      chai.request(server)
+        .get('/api/v1/breweries')
+        .end((error, response) => {
+          response.body.should.have.length(50);
+
+          // post new record
+          chai.request(server)
+            .post(`/api/v1/breweries?token=${key}`)
+            .send({
+              'name': 'my first brewery',
+              'established': '2001',
+              'website': 'http://beerme.com'
+            })
+            .end((error, response) => {
+              response.should.have.status(201);
+              response.should.be.json;
+              response.body.should.be.a('object');
+              response.body.should.have.property('id');
+              response.body.should.have.property('name');
+              response.body.should.have.property('established');
+              response.body.should.have.property('website');
+              response.body.name.should.equal('my first brewery');
+              response.body.established.should.equal('2001');
+
+              // check record count again
+              chai.request(server)
+                .get('/api/v1/breweries')
+                .end((error, response) => {
+                  response.body.should.have.length(51);
+                  done();
+                });
+            });
+        });
+    });
+
+    it('should error if the post is missing a parameter', done => {
+      chai.request(server)
+        .post(`/api/v1/breweries?token=${key}`)
+        .send({
+          'name': 'test1',
+          'website': 'http://beerme.com'
+        })
+        .end((error, response) => {
+          response.should.have.status(422);
+          response.body.should.have.property('error');
+          done();
+        });
+    });
+
+    it('should return a 403 error with incorrect token', done => {
+      chai.request(server)
+        .post('/api/v1/breweries?token=203')
         .end((error, response) => {
           response.should.have.status(403);
           done();
