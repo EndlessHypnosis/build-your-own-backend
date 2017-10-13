@@ -19,7 +19,7 @@ exports.up = function (knex, Promise) {
       table.foreign('brewery_id').references('breweries.id');
       table.timestamps(true, true);
     })
-  ])
+  ]);
 };
 
 exports.down = function (knex, Promise) {

@@ -13,7 +13,6 @@
           main
 ***********************************************/
 
-
 .main-title-curtain {
   font-size: 80px;
   color: white;
@@ -35,14 +34,6 @@
   line-height: 1.2;
   transform: rotate(-6deg);
   text-shadow: 0px 2px 3px blue;
-  /*animation: neon .2s;
-  animation-delay: 3s;
-  animation-iteration-count: 6;*/
-}
-
-@keyframes neon {
-  0% {text-shadow: 0px 2px 3px blue;}
-  100% {text-shadow: 0px 0px 0px blue;}
 }
 
 .curtain-container  {
@@ -66,7 +57,6 @@
   40% {top: 0px;}
   100% {top: -2000px;}
 }
-
 
 .background-video-container  {
   width: 100%;
@@ -233,7 +223,6 @@ media query 575
 }
 
 
-
 /***************************************
 media query 400
 ****************************************/
@@ -244,37 +233,37 @@ media query 400
     width: 300px;
   }
 
-.main-title {
-  font-size: 44px;
+  .main-title {
+    font-size: 44px;
   }
 
-.controls {
-  width: 250px;
-}
+  .controls {
+    width: 250px;
+  }
 
-input {
-  width: 260px;
-}
+  input {
+    width: 260px;
+  }
 
-.button {
-  width: 260px;
-}
+  .button {
+    width: 260px;
+  }
 
-.token-container  {
-  width: 260px;
-}
+  .token-container  {
+    width: 260px;
+  }
 
-.response {
-  width: 248px;
-}
+  .response {
+    width: 248px;
+  }
 
-.main-spacer  {
-  height: 10px;
-}
+  .main-spacer  {
+    height: 10px;
+  }
 
-.main-title-curtain {
-  font-size: 40px;
-  margin-top: 150px;
-}
+  .main-title-curtain {
+    font-size: 40px;
+    margin-top: 150px;
+  }
 
 }

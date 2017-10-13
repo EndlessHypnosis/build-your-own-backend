@@ -26,16 +26,8 @@ const isInt = (value) => {
     !isNaN(parseInt(value, 10));
 };
 
-
-app.get('/api/v1/seedbyob', (request, response) => {
-  fetchBreweries(cleanBreweryData);
-  response.sendStatus(200);
-});
-
-
-
+// Middleware for JWT Token Validation
 const checkAuth = (request, response, next) => {
-
   let tokenDoesExist = false;
   let token;
 
@@ -57,14 +49,10 @@ const checkAuth = (request, response, next) => {
     token = request.query.token;
   }
 
-
-
-  // if no token exists, respond with 403...not authorized
   if (!tokenDoesExist) {
     return response.status(403).json({ error: 'You must be authorized to use this endpoint.' });
   }
 
-  // if token does exist, verify token
   if (tokenDoesExist) {
     jwt.verify(token, app.get('secretKey'), (err, decoded) => {
       if (err) {
@@ -77,18 +65,12 @@ const checkAuth = (request, response, next) => {
 
       // then call next (this is middleware, so passes on execution)
       next();
-
     });
   }
 };
 
-
-
-
-
 // Authentication endpoint for JWT Token signing
 app.post('/api/v1/authenticate', (request, response) => {
-
   const { appName, email } = request.body;
 
   // check if appName exists in payload
@@ -110,19 +92,15 @@ app.post('/api/v1/authenticate', (request, response) => {
   // add {admin: true} to request body before passing payload into token signing.
   let newTokenPayload = Object.assign({}, request.body, { admin: adminVerification });
 
-
   let token = jwt.sign(newTokenPayload, app.get('secretKey'), { expiresIn: '48h' });
   response.status(201).json({ token, adminVerification });
 });
-
-
 
 
 // GET /beers endpoint with optional query param: abv
 app.get('/api/v1/beers', (request, response) => {
   let userAbv = request.query.abv;
   let myDataBase;
-
 
   if (userAbv) {
     if (isNaN(userAbv)) {
@@ -146,7 +124,6 @@ app.get('/api/v1/beers', (request, response) => {
     });
 });
 
-
 // GET /beers/:id endpoint to request a specific beer by id
 app.get('/api/v1/beers/:id', (request, response) => {
   if (!isInt(request.params.id)) {
@@ -169,10 +146,8 @@ app.get('/api/v1/beers/:id', (request, response) => {
     });
 });
 
-
 // GET /breweries/:id/beers endpoint to request all beers associated with a brewery
 app.get('/api/v1/breweries/:id/beers', (request, response) => {
-
   if (!isInt(request.params.id)) {
     return response.status(422).json({
       error: 'Invalid input data type: id'
@@ -220,7 +195,6 @@ app.post('/api/v1/beers', checkAuth, (request, response) => {
       response.status(500).json({ error });
     });
 });
-
 
 // PATCH /beers/:id endpoint to update partial information of a specific beer
 app.patch('/api/v1/beers/:id', checkAuth, (request, response) => {
@@ -373,7 +347,6 @@ app.delete('/api/v1/breweries/:id', checkAuth, (request, response) => {
           response.sendStatus(204);
         })
         .catch(error => {
-          console.log('CATCH DELETE ERROR:', error);
           response.status(500).json({ error });
         });
     })
@@ -383,6 +356,11 @@ app.delete('/api/v1/breweries/:id', checkAuth, (request, response) => {
 });
 
 
+// UNRELATED to project requirements - this seeds our local data file
+app.get('/api/v1/seedbyob', (request, response) => {
+  fetchBreweries(cleanBreweryData);
+  response.sendStatus(200);
+});
 
 
 app.listen(app.get('port'), () => {
