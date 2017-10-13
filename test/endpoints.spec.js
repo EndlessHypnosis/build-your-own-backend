@@ -42,7 +42,9 @@ describe('Client Routes', () => {
 // Endpoint tests
 describe('API Routes', () => {
 
-  let key = null
+  let beerID = 0;
+  let breweryID = 0;
+  let key = null;
 
   before(done => {
     chai.request(server)
@@ -61,19 +63,41 @@ describe('API Routes', () => {
   });
 
   // Re-seed data between tests
+  // beforeEach(done => {
+  //   database.migrate.rollback()
+  //     .then(() => {
+  //       database.migrate.latest()
+  //         .then(() => {
+  //           database.seed.run()
+  //             .then(() => {
+  //               done();
+  //             });
+  //         });
+  //     });
+  // });
+
   beforeEach(done => {
-    database.migrate.rollback()
+    database.seed.run()
       .then(() => {
-        database.migrate.latest()
-          .then(() => {
-            database.seed.run()
-              .then(() => {
+
+        chai.request(server)
+          .get('/api/v1/beers')
+          .end((error, response) => {
+
+            beerID = response.body[0].id;
+
+            chai.request(server)
+              .get('/api/v1/breweries')
+              .end((error, response) => {
+
+                breweryID = response.body[0].id;
+
                 done();
               });
           });
+
       });
   });
-
 
   describe('GET /api/v1/beers', () => {
 
@@ -362,8 +386,81 @@ describe('API Routes', () => {
         });
     });
 
-  })
+  });
+  
+  
+  
+  describe('GET /api/v1/breweries', () => {
 
+    it('should return all of the breweries', done => {
+      chai.request(server)
+        .get('/api/v1/breweries')
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body.should.be.a('array');
+          response.body.length.should.equal(50);
+          response.body[0].should.have.property('id');
+          response.body[0].should.have.property('name');
+          response.body[0].should.have.property('established');
+          response.body[0].should.have.property('website');
+          response.body[0].should.have.property('created_at');
+          response.body[0].should.have.property('updated_at');
+          done();
+        });
+    });
+
+  });
+
+
+  describe('GET /api/v1/breweries/:id', () => {
+
+    it('should return a specific brewery for valid id', done => {
+      chai.request(server)
+        .get(`/api/v1/breweries/${breweryID}`)
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body.should.be.a('array');
+          response.body.length.should.equal(1);
+          response.body[0].should.have.property('id');
+          response.body[0].id.should.equal(breweryID);
+          response.body[0].should.have.property('name');
+          response.body[0].should.have.property('established');
+          response.body[0].should.have.property('website');
+          response.body[0].should.have.property('created_at');
+          response.body[0].should.have.property('updated_at');
+
+          done();
+        });
+    });
+
+    it('should return a 404 for an invalid id', done => {
+      chai.request(server)
+        .get('/api/v1/breweries/1')
+        .end((error, response) => {
+          response.should.have.status(404);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.should.have.property('error');
+          response.body.error.should.equal('Could not find any Breweries with ID 1');
+
+          done();
+        });
+    });
+
+    it('should return a 422 error for an invalid id format', done => {
+      chai.request(server)
+        .get('/api/v1/breweries/abc')
+        .end((error, response) => {
+          response.should.have.status(422);
+          response.body.error.should.equal('Invalid input data type: id');
+
+          done();
+        });
+    });
+
+  });
 
 
 

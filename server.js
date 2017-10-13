@@ -306,6 +306,12 @@ app.get('/api/v1/beers', (request, response) => {
 
 // GET /beers/:id endpoint to request a specific beer by id
 app.get('/api/v1/beers/:id', (request, response) => {
+  if (!isInt(request.params.id)) {
+    return response.status(422).json({
+      error: 'Invalid input data type: id'
+    });
+  }
+
   database('beers').where('id', request.params.id).select()
     .then(beers => {
       if (!beers.length) {
@@ -323,6 +329,13 @@ app.get('/api/v1/beers/:id', (request, response) => {
 
 // GET /breweries/:id/beers endpoint to request all beers associated with a brewery
 app.get('/api/v1/breweries/:id/beers', (request, response) => {
+  
+  if (!isInt(request.params.id)) {
+    return response.status(422).json({
+      error: 'Invalid input data type: id'
+    });
+  }
+  
   database('beers').where('brewery_id', request.params.id).select()
     .then(beers => {
       if (!beers.length) {
@@ -423,6 +436,12 @@ app.get('/api/v1/breweries', (request, response) => {
 
 // GET /breweries/:id endpoint retrieves specific brewery based on id
 app.get('/api/v1/breweries/:id', (request, response) => {
+  if (!isInt(request.params.id)) {
+    return response.status(422).json({
+      error: 'Invalid input data type: id'
+    });
+  }
+  
   database('breweries').where('id', request.params.id).select()
     .then(breweries => {
       if (!breweries.length) {
