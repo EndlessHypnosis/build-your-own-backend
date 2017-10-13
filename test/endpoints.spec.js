@@ -587,5 +587,51 @@ describe('API Routes', () => {
   });
 
 
+  describe('PATCH /api/v1/beers/:id', () => {
+
+    it('should replace some of a specific beers information', done => {
+      chai.request(server)
+        .patch(`/api/v1/beers/${beerID}?token=${key}`)
+        .send({
+            'name': 'beer test1',
+            })
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.should.have.property('id');
+          response.body.should.have.property('name');
+          response.body.name.should.equal('beer test1');
+          response.body.should.have.property('abv');
+          response.body.should.have.property('is_organic');
+          response.body.should.have.property('style');
+          response.body.should.have.property('brewery_id');
+          done();
+        });
+    });
+
+    it('should return an error with incorrect id', done => {
+      chai.request(server)
+        .patch(`/api/v1/beers/foo?token=${key}`)
+        .end((error, response) => {
+          response.should.have.status(422);
+          response.body.should.have.property('error');
+          response.body.error.should.equal('Invalid ID. Cannot update beer.');
+          done();
+        });
+    });
+
+    it('should return a 403 error with incorrect token', done => {
+      chai.request(server)
+        .patch(`/api/v1/beers/40?token=203`)
+        .end((error, response) => {
+          response.should.have.status(403);
+          done();
+        });
+    });
+
+  });
+
+
 
 });
