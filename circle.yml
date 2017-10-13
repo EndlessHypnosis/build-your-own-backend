@@ -16,6 +16,9 @@ deployment:
       appname: build-your-own-backend-brewery
 test:
   pre:
-    - eslint server.js
+    - eslint db/migrations/20171009182658_initial.js
+    - eslint db/seeds/development/breweries.js
     - eslint public/scripts/app.js
-    - eslint knexfile.js
+    - eslint public/scripts/breweryDB.js
+    - eslint test/endpoints.spec.js
+    - eslint server.js
