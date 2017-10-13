@@ -10,3 +10,6 @@ deployment:
     branch: master
     heroku:
       appname: build-your-own-backend-brewery
+test:
+  pre:
+    - eslint server.js
