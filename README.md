@@ -62,16 +62,16 @@
 #### Beers
 
 - **[<code>GET</code> /api/v1/beers?abv=NUM](documentation/GET_beers.md)**
-- **[<code>GET</code> /api/v1/beers/:id](linktomarkdown.md)**
-- **[<code>GET</code> /api/v1/breweries/:id/beers](linktomarkdown.md)**
-- **[<code>POST</code> /api/v1/beers](linktomarkdown.md)**
-- **[<code>PATCH</code> /api/v1/beers/:id](linktomarkdown.md)**
-- **[<code>DELETE</code> /api/v1/beers/:id](linktomarkdown.md)**
+- **[<code>GET</code> /api/v1/beers/:id](documentation/GET_beers_id.md)**
+- **[<code>GET</code> /api/v1/breweries/:id/beers](documentation/GET_brewery_beers.md)**
+- **[<code>POST</code> /api/v1/beers](documentation/POST_beer.md)**
+- **[<code>PATCH</code> /api/v1/beers/:id](documentation/PATCH_beer.md)**
+- **[<code>DELETE</code> /api/v1/beers/:id](documentation/DELETE_beer.md)**
 
 #### Breweries
 
-- **[<code>GET</code> /api/v1/breweries](linktomarkdown.md)**
-- **[<code>GET</code> /api/v1/breweries/:id](linktomarkdown.md)**
-- **[<code>POST</code> /api/v1/breweries](linktomarkdown.md)**
-- **[<code>PUT</code> /api/v1/breweries/:id](linktomarkdown.md)**
-- **[<code>DELETE</code> /api/v1/breweries/:id](linktomarkdown.md)**
+- **[<code>GET</code> /api/v1/breweries](documentation/GET_breweries.md)**
+- **[<code>GET</code> /api/v1/breweries/:id](documentation/GET_breweries_id.md)**
+- **[<code>POST</code> /api/v1/breweries](documentation/POST_brewery.md)**
+- **[<code>PUT</code> /api/v1/breweries/:id](documentation/PUT_brewery.md)**
+- **[<code>DELETE</code> /api/v1/breweries/:id](documentation/DELETE_brewery.md)**
