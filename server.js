@@ -8,7 +8,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
-var http = require('http');
 
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
@@ -16,19 +15,10 @@ const database = require('knex')(configuration);
 
 require('dotenv').config();
 
+const { cleanBreweryData, fetchBreweries } = require('./public/scripts/breweryDB');
+
 const jwt = require('jsonwebtoken');
-// JWT SECRET KEY
-// let secretKey = process.env.JWT_SECRET || 'jasonandnicksawesomebyobproject'
 app.set('secretKey', process.env.JWT_SECRET);
-
-// uncomment this when you need to re-seed the database.
-// const keys = require('./public/scripts/key');
-
-const keys = {
-  apiKey: process.env.BREW_API_KEY
-};
-
-const fs = require('fs');
 
 const isInt = (value) => {
   return !isNaN(value) &&
@@ -36,158 +26,11 @@ const isInt = (value) => {
     !isNaN(parseInt(value, 10));
 };
 
-const cleanBreweryData = (dataToClean) => {
-  let breweries = dataToClean.data;
-  let cleanedBreweries = breweries.map(brewery => {
-    let newBrewery = Object.assign({}, {
-      breweryDB_id: brewery.id,
-      name: brewery.name || 'Default Brewery',
-      established: brewery.established || '1995',
-      website: brewery.website || 'http://brewery.com'
-    });
-    return newBrewery;
-  });
-  // use the cleanedbreweries
-  fetchBeers(cleanBeerData, cleanedBreweries);
-};
-
-
-const cleanBeerData = (dataToClean, breweries) => {
-  let beers = dataToClean.data;
-  let cleanedBeerData = beers.map(beer => {
-    let newBeer = Object.assign({}, {
-      name: beer.name || 'Default Beer',
-      abv: parseFloat(beer.abv).toFixed(2) || 5.5,
-      is_organic: beer.isOrganic || 'N',
-      style: beer.style.name || 'Default Beer Style',
-      breweryDB_id: beer.breweries[0].id || 'snQlvg'
-    });
-    return newBeer;
-  });
-  //return cleanedBeerData;
-
-  let BreweriesWithBeers = breweries.map((brewery, index) => {
-
-    if (index < 25) {
-
-      let newBrewery = Object.assign({}, {
-        name: brewery.name,
-        website: brewery.website,
-        established: brewery.established,
-        beers: []
-      });
-
-      newBrewery.beers.push(cleanedBeerData[index * 2]);
-      newBrewery.beers.push(cleanedBeerData[(index * 2) + 1]);
-
-      return newBrewery;
-
-    } else {
-      return brewery;
-    }
-
-  });
-
-
-
-  let outputJson = JSON.stringify(BreweriesWithBeers, null, 2);
-
-  fs.writeFile('./breweries.json', outputJson, 'utf8', (error) => {
-    if (error) {
-      /* eslint-disable no-alert, no-console */
-      return console.error(error);
-      /* eslint-enable no-alert, no-console */
-    }
-  });
-
-};
-
-
-const fetchBeers = (callback, breweryData) => {
-  // let cleanedBeers = [];
-  http.get(`http://api.brewerydb.com/v2/beers?key=${keys.apiKey}&withBreweries=Y`, (res) => {
-    var body = '';
-    res.setEncoding('utf8');
-    res.on('data', function (chunk) {
-      body += chunk;
-    });
-
-    res.on('end', function () {
-      var beers = JSON.parse(body);
-      // cleanedBeers = cleanBeerData(beers);
-      callback(beers, breweryData);
-    });
-
-  }).on('error', function (e) {
-    /* eslint-disable no-alert, no-console */
-    console.log('Got an error: ', e);
-    /* eslint-enable no-alert, no-console */
-  });
-  // return cleanedBeers;
-};
-
-
-const fetchBreweries = (callback) => {
-  // let cleanedBreweries = [];
-
-  http.get(`http://api.brewerydb.com/v2/breweries?key=${keys.apiKey}`, (res) => {
-    var body = '';
-    res.setEncoding('utf8');
-    res.on('data', function (chunk) {
-      body += chunk;
-    });
-
-    res.on('end', function () {
-      var breweries = JSON.parse(body);
-      callback(breweries);
-      // cleanedBreweries = cleanBreweryData(breweries);
-      // return cleanedBreweries;
-    });
-
-  }).on('error', function (e) {
-    /* eslint-disable no-alert, no-console */
-    console.log('Got an error: ', e);
-    /* eslint-enable no-alert, no-console */
-  });
-};
-
 
 app.get('/api/v1/seedbyob', (request, response) => {
-
-
-  // http.get(`http://api.brewerydb.com/v2/breweries?key=${keys.apiKey}`, data => {
-  //   console.log('your data is:', data)
-  // })
-
   fetchBreweries(cleanBreweryData);
-
   response.sendStatus(200);
-
-  // let cleanedBeers = fetchBeers();
-
-  // response.status(200).json(cleanedBreweries);
-
-  // database('projects').select()
-  //   .then(projects => {
-  //     response.status(200).json(projects);
-  //   })
-  //   .catch(error => {
-  //     response.status(500).json({ error });
-  //   });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
