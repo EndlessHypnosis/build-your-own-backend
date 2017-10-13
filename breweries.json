@@ -181,7 +181,7 @@
       },
       {
         "name": "\"Jemmy Dean\" Breakfast Stout",
-        "abv": "NaN",
+        "abv": "10.5",
         "is_organic": "N",
         "style": "Sweet or Cream Stout",
         "breweryDB_id": "GmYAZI"
@@ -237,7 +237,7 @@
     "beers": [
       {
         "name": "\"Not Just Some\" Oatmeal Stout",
-        "abv": "NaN",
+        "abv": "10.5",
         "is_organic": "N",
         "style": "Oatmeal Stout",
         "breweryDB_id": "qyMFUm"
@@ -454,7 +454,7 @@
       },
       {
         "name": "#1 American",
-        "abv": "NaN",
+        "abv": "10.5",
         "is_organic": "N",
         "style": "American-Style Pale Ale",
         "breweryDB_id": "rflWkA"
