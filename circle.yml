@@ -17,3 +17,4 @@ deployment:
 test:
   pre:
     - eslint server.js
+    - eslint public/scripts/app.js
