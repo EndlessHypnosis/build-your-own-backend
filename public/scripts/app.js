@@ -49,7 +49,6 @@ const verificationColor = (data) => {
   } else {
     $('.main-container').removeClass('red-shadow');
     $('.main-container').addClass('green-shadow');
-    $('.admin-true-audio').prop('volume', 1);
     $('.admin-true-audio').trigger('play');
   }
 };

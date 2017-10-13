@@ -78,6 +78,7 @@
 
 .main-container {
   width: 400px;
+  background: white;
   margin: auto;
   padding: 20px;
   position: relative;
