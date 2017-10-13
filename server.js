@@ -292,7 +292,7 @@ app.get('/api/v1/beers', (request, response) => {
   myDataBase.select()
     .then(beers => {
       if (!beers.length) {
-        return response.sendStatus(404).json({
+        return response.status(404).json({
           error: 'Could not find any beers'
         });
       }

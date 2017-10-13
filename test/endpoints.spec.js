@@ -63,6 +63,7 @@ describe('API Routes', () => {
       });
   });
 
+
   describe('GET /api/v1/beers', () => {
 
     it('should return all of the beers', done => {
@@ -73,24 +74,57 @@ describe('API Routes', () => {
           response.should.be.json;
           response.body.should.be.a('array');
           response.body.length.should.equal(50);
-          // response.body[0].should.have.property('id');
-          // response.body[0].should.have.property('name');
-          // response.body[0].should.have.property('created_at');
-          // response.body[0].should.have.property('updated_at');
-
-          // let projectOne = response.body.filter(project => {
-          //   return project.name === 'project 1'
-          // })
-          // projectOne.length.should.equal(1);
-
-          // let projectFoo = response.body.filter(project => {
-          //   return project.name === 'foo'
-          // })
-          // projectFoo.length.should.equal(0);
+          response.body[0].should.have.property('id');
+          response.body[0].should.have.property('abv');
+          response.body[0].should.have.property('name');
+          response.body[0].should.have.property('style');
+          response.body[0].should.have.property('is_organic');
+          response.body[0].should.have.property('brewery_id');
+          response.body[0].should.have.property('created_at');
+          response.body[0].should.have.property('updated_at');
 
           done();
         });
     });
+
+    it('should return error when trying to fetch beer with invalid abv', done => {
+      chai.request(server)
+        .get('/api/v1/beers?abv=foo')
+        .end((error, response) => {
+          response.should.have.status(422);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.should.have.property('error');
+          response.body.error.should.equal('Invalid abv param. Please enter valid number.');
+          done();
+        });
+    });
+
+    it('should return a 404 when trying to find beers with high abv', done => {
+      chai.request(server)
+        .get('/api/v1/beers?abv=100')
+        .end((error, response) => {
+          response.should.have.status(404);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.should.have.property('error');
+          response.body.error.should.equal('Could not find any beers');
+          done();
+        });
+    });
+
+    it('should return all beers with abv above 11.5', done => {
+      chai.request(server)
+        .get('/api/v1/beers?abv=10.2')
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body.should.be.a('array');
+          response.body.length.should.equal(6);
+          done();
+        });
+    });
+
 
   });
 
