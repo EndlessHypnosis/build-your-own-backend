@@ -48,6 +48,9 @@ describe('Client Routes', () => {
 // Endpoint tests
 describe('API Routes', () => {
 
+  // let beerID = 0;
+  // let breweryID = 0;
+
   before(done => {
     database.migrate.latest()
       .then(() => {
@@ -57,15 +60,21 @@ describe('API Routes', () => {
 
   // Re-seed data between tests
   beforeEach(done => {
-    database.seed.run()
+    database.migrate.rollback()
       .then(() => {
-        done();
+        database.migrate.latest()
+          .then(() => {
+            database.seed.run()
+              .then(() => {
+                done();
+              });
+          });
       });
   });
 
 
   describe('GET /api/v1/beers', () => {
-
+    
     it('should return all of the beers', done => {
       chai.request(server)
         .get('/api/v1/beers')
@@ -124,9 +133,68 @@ describe('API Routes', () => {
           done();
         });
     });
+  });
 
+
+  describe('GET /api/v1/breweries', () => {
+
+    it('should return all of the breweries', done => {
+      chai.request(server)
+        .get('/api/v1/breweries')
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body.should.be.a('array');
+          response.body.length.should.equal(50);
+          response.body[0].should.have.property('id');
+          response.body[0].should.have.property('name');
+          response.body[0].should.have.property('established');
+          response.body[0].should.have.property('website');
+          response.body[0].should.have.property('created_at');
+          response.body[0].should.have.property('updated_at');
+          done();
+        });
+    });
 
   });
 
+
+  describe('GET /api/v1/breweries/:id', () => {
+
+    it('should return a specific brewery for valid id', done => {
+      chai.request(server)
+        .get('/api/v1/breweries/5')
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body.should.be.a('array');
+          response.body.length.should.equal(1);
+          response.body[0].should.have.property('id');
+          response.body[0].id.should.equal(5);
+          response.body[0].should.have.property('name');
+          response.body[0].should.have.property('established');
+          response.body[0].should.have.property('website');
+          response.body[0].should.have.property('created_at');
+          response.body[0].should.have.property('updated_at');
+
+          done();
+        });
+    });
+
+    it('should return a 404 for an invalid id', done => {
+      chai.request(server)
+        .get('/api/v1/breweries/555')
+        .end((error, response) => {
+          response.should.have.status(404);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.should.have.property('error');
+          response.body.error.should.equal('Could not find any Breweries with ID 555');
+
+          done();
+        });
+    });
+
+  });
 
 });
