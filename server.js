@@ -329,13 +329,13 @@ app.get('/api/v1/beers/:id', (request, response) => {
 
 // GET /breweries/:id/beers endpoint to request all beers associated with a brewery
 app.get('/api/v1/breweries/:id/beers', (request, response) => {
-  
+
   if (!isInt(request.params.id)) {
     return response.status(422).json({
       error: 'Invalid input data type: id'
     });
   }
-  
+
   database('beers').where('brewery_id', request.params.id).select()
     .then(beers => {
       if (!beers.length) {
@@ -441,7 +441,7 @@ app.get('/api/v1/breweries/:id', (request, response) => {
       error: 'Invalid input data type: id'
     });
   }
-  
+
   database('breweries').where('id', request.params.id).select()
     .then(breweries => {
       if (!breweries.length) {
@@ -520,19 +520,26 @@ app.delete('/api/v1/breweries/:id', checkAuth, (request, response) => {
   if (!isInt(request.params.id)) {
     return response.status(422).json({ error: 'Invalid ID. Cannot delete brewery.' });
   }
-  const breweryIdToDelete = request.params.id;
-  database('breweries')
-    .where('id', breweryIdToDelete)
-    .delete()
+  // delete all beers associated to brewery
+  database('beers').where('brewery_id', request.params.id).delete()
     .then(() => {
-      response.sendStatus(204);
+      database('breweries')
+        .where('id', request.params.id)
+        .delete()
+        .then(() => {
+          response.sendStatus(204);
+        })
+        .catch(error => {
+          console.log('CATCH DELETE ERROR:', error);
+          response.status(500).json({ error });
+        });
     })
     .catch(error => {
-      console.log('CATCH DELETE ERROR:', error);
-      
       response.status(500).json({ error });
     });
 });
+
+
 
 
 app.listen(app.get('port'), () => {
