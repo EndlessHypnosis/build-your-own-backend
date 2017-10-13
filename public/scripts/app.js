@@ -43,11 +43,15 @@ $('.auth-submit').on('click', () => {
 const verificationColor = (data) => {
   if (!data) {
     $('.admin-response').addClass('red');
+    $('.main-container').removeClass('green-shadow');
     $('.main-container').addClass('red-shadow');
+    $('.admin-false-audio').trigger('play');
   } else {
+    $('.main-container').removeClass('red-shadow');
     $('.main-container').addClass('green-shadow');
+    $('.admin-true-audio').prop("volume", 1);
+    $('.admin-true-audio').trigger('play');
   }
 }
-
 
 btnFillData.on('click', fillData);

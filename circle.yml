@@ -1,3 +1,7 @@
+general:
+  branches:
+    only:
+      - master
 machine:
   timezone:
     America/Denver
@@ -10,3 +14,8 @@ deployment:
     branch: master
     heroku:
       appname: build-your-own-backend-brewery
+test:
+  pre:
+    - eslint server.js
+    - eslint public/scripts/app.js
+    - eslint knexfile.js

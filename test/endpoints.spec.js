@@ -39,23 +39,27 @@ describe('Client Routes', () => {
 });
 
 
-
-
-
-
-
-
 // Endpoint tests
 describe('API Routes', () => {
 
   let beerID = 0;
   let breweryID = 0;
+  let key = null;
 
   before(done => {
+    chai.request(server)
+    .post('/api/v1/authenticate')
+    .send({
+        "email": "jason@turing.io",
+        "appName": "test"
+        })
+    .end((error, response) => {
+      key = response.body.token;
     database.migrate.latest()
       .then(() => {
         done();
       });
+    });
   });
 
   // Re-seed data between tests
@@ -96,9 +100,8 @@ describe('API Routes', () => {
   });
 
   describe('GET /api/v1/beers', () => {
-    
+
     it('should return all of the beers', done => {
-      
       chai.request(server)
         .get('/api/v1/beers')
         .end((error, response) => {
@@ -114,7 +117,6 @@ describe('API Routes', () => {
           response.body[0].should.have.property('brewery_id');
           response.body[0].should.have.property('created_at');
           response.body[0].should.have.property('updated_at');
-
           done();
         });
     });
@@ -156,9 +158,238 @@ describe('API Routes', () => {
           done();
         });
     });
+
+
   });
 
 
+  describe('GET /api/v1/beers/:id', () => {
+
+    it('should return a specific beer by its unique id', done => {
+      chai.request(server)
+        .get('/api/v1/beers/15')
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body.should.be.a('array');
+          response.body.length.should.equal(1);
+          response.body[0].should.have.property('id');
+          response.body[0].should.have.property('abv');
+          response.body[0].should.have.property('name');
+          response.body[0].should.have.property('style');
+          response.body[0].should.have.property('is_organic');
+          response.body[0].should.have.property('brewery_id');
+          response.body[0].should.have.property('created_at');
+          response.body[0].should.have.property('updated_at');
+          done();
+        });
+    });
+
+    it('should return error when an invalid id is entered', done => {
+      chai.request(server)
+        .get('/api/v1/beers/100000')
+        .end((error, response) => {
+          response.should.have.status(404);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.should.have.property('error');
+          done();
+        });
+    });
+
+  })
+
+
+  describe('/api/v1/breweries/:id/beers', () => {
+
+    it('should return all beers associated with a brewery', done => {
+      chai.request(server)
+        .get('/api/v1/breweries/10/beers')
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body.should.be.a('array');
+          response.body.length.should.equal(2);
+          response.body[0].should.have.property('id');
+          response.body[0].should.have.property('abv');
+          response.body[0].should.have.property('name');
+          response.body[0].should.have.property('style');
+          response.body[0].should.have.property('is_organic');
+          response.body[0].should.have.property('brewery_id');
+          response.body[0].should.have.property('created_at');
+          response.body[0].should.have.property('updated_at');
+          done();
+        });
+    });
+
+    it('should return error when an invalid brewery id is enetered', done => {
+      chai.request(server)
+        .get('/api/v1/breweries/10000/beers')
+        .end((error, response) => {
+          response.should.have.status(404);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.should.have.property('error');
+          // response.body.error.should.equal(`Could not find beer with id ${request.params.id}`);
+          done();
+        });
+    });
+
+  })
+
+
+  describe('DELETE /api/v1/beers/:id', () => {
+
+    it('should delete a beer by its id', done => {
+      chai.request(server)
+        .delete(`/api/v1/beers/2?token=${key}`)
+        .end((error, response) => {
+          response.should.have.status(204);
+
+    it('beers array length should now be 49', done => {
+      chai.request(server)
+        .get('/api/v1/beers')
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body.should.be.a('array');
+          response.body.length.should.equal(49);
+        });
+    });
+          done();
+        });
+    });
+
+    it('should return an error with incorrect id', done => {
+      chai.request(server)
+        .delete(`/api/v1/beers/foo?token=${key}`)
+        .end((error, response) => {
+          response.should.have.status(422);
+          response.body.should.have.property('error');
+          response.body.error.should.equal('Invalid ID. Cannot delete beer.');
+          done();
+        });
+    });
+
+    it('should return a 403 error with incorrect token', done => {
+      chai.request(server)
+        .delete(`/api/v1/beers/2?token=203`)
+        .end((error, response) => {
+          response.should.have.status(403);
+          done();
+        });
+    });
+
+  })
+
+  describe('DELETE /api/v1/breweries/:id', () => {
+
+    it('should delete a brewery by its id', done => {
+      chai.request(server)
+        .delete(`/api/v1/breweries/40?token=${key}`)
+        .end((error, response) => {
+          response.should.have.status(204);
+
+    it('beers array length should now be 49', done => {
+      chai.request(server)
+        .get('/api/v1/breweries')
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body.should.be.a('array');
+          response.body.length.should.equal(49);
+        });
+    });
+          done();
+        });
+    });
+
+    it('should return an error with incorrect id', done => {
+      chai.request(server)
+        .delete(`/api/v1/breweries/foo?token=${key}`)
+        .end((error, response) => {
+          response.should.have.status(422);
+          response.body.should.have.property('error');
+          response.body.error.should.equal('Invalid ID. Cannot delete brewery.');
+          done();
+        });
+    });
+
+    it('should return a 403 error with incorrect token', done => {
+      chai.request(server)
+        .delete(`/api/v1/breweries/2?token=203`)
+        .end((error, response) => {
+          response.should.have.status(403);
+          done();
+        });
+    });
+
+  })
+
+
+  describe('PUT /api/v1/beers/:id', () => {
+
+    it('should replace all brewery data by brewery id', done => {
+      chai.request(server)
+        .put(`/api/v1/breweries/40?token=${key}`)
+        .send({
+            "name": "test1",
+            "established": "2010",
+            "website": "test web"
+            })
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.should.have.property('id');
+          response.body.should.have.property('name');
+          response.body.should.have.property('established');
+          response.body.should.have.property('website');
+          response.body.name.should.equal('test1');
+          response.body.established.should.equal('2010');
+          response.body.website.should.equal('test web');
+          done();
+        });
+    });
+
+    it('should error if the put is missing a parameter', done => {
+      chai.request(server)
+        .put(`/api/v1/breweries/40?token=${key}`)
+        .send({
+            "name": "test1",
+            "established": "2010"
+            })
+        .end((error, response) => {
+          response.should.have.status(422);
+          response.body.should.have.property('error');
+          done();
+        });
+    });
+
+    it('should return an error with incorrect id', done => {
+      chai.request(server)
+        .put(`/api/v1/breweries/foo?token=${key}`)
+        .end((error, response) => {
+          response.should.have.status(422);
+          response.body.should.have.property('error');
+          response.body.error.should.equal('Invalid ID. Incorrect ID format.');
+          done();
+        });
+    });
+
+    it('should return a 403 error with incorrect token', done => {
+      chai.request(server)
+        .put(`/api/v1/breweries/40?token=203`)
+        .end((error, response) => {
+          response.should.have.status(403);
+          done();
+        });
+    });
+
+  });
+  
+  
+  
   describe('GET /api/v1/breweries', () => {
 
     it('should return all of the breweries', done => {
@@ -230,5 +461,7 @@ describe('API Routes', () => {
     });
 
   });
+
+
 
 });
