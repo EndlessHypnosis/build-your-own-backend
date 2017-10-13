@@ -196,7 +196,7 @@ describe('API Routes', () => {
 
   describe('GET /api/v1/breweries/:id/beers', () => {
 
-    it('should return all beers associated with a brewery', done => {      
+    it('should return all beers associated with a brewery', done => {
       chai.request(server)
         .get(`/api/v1/breweries/${breweryID}/beers`)
         .end((error, response) => {
@@ -411,7 +411,7 @@ describe('API Routes', () => {
 
   describe('DELETE /api/v1/breweries/:id', () => {
 
-    it.skip('should delete a brewery by its id', done => {
+    it('should delete a brewery by its id', done => {
       chai.request(server)
         .delete(`/api/v1/breweries/${breweryID}?token=${key}`)
         .end((error, response) => {
