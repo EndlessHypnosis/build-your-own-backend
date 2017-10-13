@@ -14,6 +14,17 @@
 ***********************************************/
 
 
+.main-title-curtain {
+  font-size: 80px;
+  color: white;
+  text-align: center;
+  margin-top: 300px;
+  font-family: 'Satisfy', cursive;
+  line-height: 1.2;
+  transform: rotate(-6deg);
+  text-shadow: 2px 2px 8px yellow;
+}
+
 .main-title {
   font-size: 52px;
   color: red;
@@ -23,7 +34,39 @@
   font-family: 'Satisfy', cursive;
   line-height: 1.2;
   transform: rotate(-6deg);
+  text-shadow: 0px 2px 3px blue;
+  /*animation: neon .2s;
+  animation-delay: 3s;
+  animation-iteration-count: 6;*/
 }
+
+@keyframes neon {
+  0% {text-shadow: 0px 2px 3px blue;}
+  100% {text-shadow: 0px 0px 0px blue;}
+}
+
+.curtain-container  {
+  width: 100%;
+  height: 100%;
+  background: red;
+  top: -2000px;
+  position: absolute;
+  overflow: hidden;
+  z-index: 1000;
+  animation-name: curtainRise;
+  animation-duration: 4s;
+  background-image: url('../assets/red-curtain.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+@keyframes curtainRise {
+  0% {top: 0px;}
+  40% {top: 0px;}
+  100% {top: -2000px;}
+}
+
 
 .background-video-container  {
   width: 100%;
@@ -51,6 +94,15 @@
   border: solid 4px #666666;
   box-shadow: 0px 0px 20px white;
   border-radius: 10px;
+  opacity: 1;
+  animation-name: fade;
+  animation-duration: 4s;
+}
+
+@keyframes fade {
+  0% {opacity: 0;}
+  70% {opacity: 0;}
+  100% {opacity: 1;}
 }
 
 .red-shadow {
@@ -165,4 +217,64 @@ input:hover {
 
 .red  {
   color: red;
+}
+
+
+/***************************************
+media query 575
+****************************************/
+
+@media screen and (max-width: 575px) {
+
+  .main-title-curtain {
+    font-size: 52px;
+  }
+
+}
+
+
+
+/***************************************
+media query 400
+****************************************/
+
+@media screen and (max-width: 400px) {
+
+  .main-container {
+    width: 300px;
+  }
+
+.main-title {
+  font-size: 44px;
+  }
+
+.controls {
+  width: 250px;
+}
+
+input {
+  width: 260px;
+}
+
+.button {
+  width: 260px;
+}
+
+.token-container  {
+  width: 260px;
+}
+
+.response {
+  width: 248px;
+}
+
+.main-spacer  {
+  height: 10px;
+}
+
+.main-title-curtain {
+  font-size: 40px;
+  margin-top: 150px;
+}
+
 }
