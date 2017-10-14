@@ -2,13 +2,11 @@
 
 * **URL**
 
-  <_The URL Structure (path only, no root url)_>
+  `/api/v1/beers?abv=NUM`
 
 * **Method:**
   
-  <_The request type_>
-
-  `GET` | `POST` | `DELETE` | `PUT`
+  `GET`
   
 *  **URL Params**
 
@@ -16,15 +14,15 @@
 
    **Required:**
  
-   `id=[integer]`
+   `No required params`
 
    **Optional:**
  
-   `photo_id=[alphanumeric]`
+   `abv=[numeric]`
 
 * **Request Body**
 
-  <_If making a post request, what should the body payload look like? URL Params rules apply here too._>
+  `N/A`
 
 * **Success Response:**
   
