@@ -28,17 +28,24 @@
 
     /api/v1/authenticate
 
-> The request body for the token must include properties:
+> The request body for the token must must include the properties:
 
     appName
     email
+    
+> Example body for Token request:
+
+    {
+        "appName": "byob",
+        "email": "someone@example.com"
+    }
 
 > This token must be included when making requests against the following endpoints:
 
     POST
     DELETE
-    UPDATE
     PUT
+    PATCH
 
 > The token may be included in any of the following 3 methods:
 
@@ -50,14 +57,15 @@
 
 ### Authorization
 
-> The JWT Token that is issued is either stamped with admin access (ability to call API endpoints in BYOB database which modifies data), or grants access to only GET requests to read data.
+> The JWT Token issued to the client is 'stamped' with either admin access (ability to call API endpoints in BYOB database which modifies data), or grants access to only GET request endpoints with read-only access.
 
 > This validation is based on detection of an email address with '@turing.io'
 
 ### Endpoints
 
 - NOTE: The response format for all API requests is JSON format.
-- Errors will be returned also as JSON objects with an error property in the body.
+- Errors will be returned also as JSON objects with an 'error' property in the body.
+- See the following endpoint documentation for details on status codes returned.
 
 #### Beers
 
