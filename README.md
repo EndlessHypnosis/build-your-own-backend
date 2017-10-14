@@ -67,6 +67,10 @@
 - Errors will be returned also as JSON objects with an 'error' property in the body.
 - See the following endpoint documentation for details on status codes returned.
 
+#### Authentication
+
+- **[<code>POST</code> /api/v1/authenticate](documentation/POST_authenticate.md)**
+
 #### Beers
 
 - **[<code>GET</code> /api/v1/beers?abv=NUM](documentation/GET_beers.md)**
