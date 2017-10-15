@@ -2,6 +2,8 @@
 
 ### **URL**
 
+`/api/v1/beers`
+
 `/api/v1/beers?abv=NUM`
 
 ### **Method:**
