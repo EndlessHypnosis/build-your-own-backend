@@ -21,6 +21,10 @@
 `abv=[numeric]`
     _Alcohol By Volume:_ The `abv` query param may be included to search all beers that are `>=` the specified abv. The value should be an integer or 2 place decimal.
 
+### **Headers**
+
+`N/A`
+
 ### **Request Body**
 
 `N/A`
@@ -51,10 +55,6 @@
   * **Code:** 422 UNPROCESSABLE ENTRY <br />
     **Content:** `{ error: 'Invalid abv param. Please enter valid number.' }` <br />
     **Troubleshoot:** If submitting `abv` query param, value must be numeric
-
-#### **_Headers:_**
-
-`N/A`
 
 #### **_Notes:_**
 
