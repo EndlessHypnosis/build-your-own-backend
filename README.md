@@ -61,17 +61,32 @@
 
 > This validation is based on detection of an email address with '@turing.io'
 
-### Endpoints
+### Resources
 
-- NOTE: The response format for all API requests is JSON format.
-- Errors will be returned also as JSON objects with an 'error' property in the body.
-- See the following endpoint documentation for details on status codes returned.
+> NOTES
 
-#### Authentication
+- The response format for all API requests is JSON format.
+- Errors will be returned also as JSON objects with an 'error' property.
+- The value of 'error' is the error message as a string.
+
+#### HTTP Response Codes
+Each response will be returned with one of the following HTTP status codes:
+
+* `200` `OK` The request was successful
+* `400` `Bad Request` There was a problem with the request (security, malformed, data validation, etc.)
+* `401` `Unauthorized` The supplied API credentials are invalid
+* `403` `Forbidden` The credentials provided do not have permission to access the requested resource
+* `404` `Not found` An attempt was made to access a resource that does not exist in the API
+* `405` `Method not allowed` The resource being accessed doesn't support the method specified (GET, POST, etc.).
+* `500` `Server Error` An error on the server occurred
+
+#### `Endpoints`
+
+##### Authentication
 
 - **[<code>POST</code> /api/v1/authenticate](documentation/POST_authenticate.md)**
 
-#### Beers
+##### Beers
 
 - **[<code>GET</code> /api/v1/beers?abv=NUM](documentation/GET_beers.md)**
 - **[<code>GET</code> /api/v1/beers/:id](documentation/GET_beers_id.md)**
