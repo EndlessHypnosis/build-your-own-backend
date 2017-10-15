@@ -44,7 +44,7 @@ _may also submit token in the body or as Authorization Header_
 
 ### **Success Response:**
   * **Code:** 201 CREATED <br />
-    **Content:** Single `beer` object<br />
+    **Content:** The newly created `beer` object<br />
     **Example Beer Object:**
     ```
     {
@@ -60,8 +60,8 @@ _may also submit token in the body or as Authorization Header_
     ```
  
 ### **Error Response:**
-  * **Code:** 404 NOT FOUND <br />
-    **Content:** error: `Could not find beer with id 123`
+  * **Code:** 422 UNPROCESSABLE ENTRY <br />
+    **Content:** `{ error: 'Could not create beer. Unexpected error' }`
 
   OR
 
