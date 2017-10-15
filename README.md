@@ -28,20 +28,26 @@
 
 > This API requires a JWT Token in order to modify any of the data in the BYOB database. A token must be requested through the following endpoint:
 
-    `/api/v1/authenticate`
+`/api/v1/authenticate`
 
-> The request body for the token must must include the properties:
+> The request body for the token must must include the properties **appName** and **email**
+
+> Example body for Token **request:**
 ```
-    appName
-    email
+{
+    "appName": "byob",
+    "email": "someone@turing.io"
+}
 ```
-> Example body for Token request:
+
+> Example body for Token **response:**
 ```
-    {
-        "appName": "byob",
-        "email": "someone@example.com"
-    }
+{
+    "token": "eyJhbGciOiJIUzI1NiIsIeR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pY2tAdHVyaW5nLmlvcCIsImFwcE5hbWUiOiJieW9iIiwiYWRtaW4iOmZIbHNlLCJpYXQiOjE1MDgwNDQ0MzMsImV4cCP6MTUwODIxNzIzM30.813d0w87z2x4EZUNdEbUcamDysHxM0bI31cm239algI",
+    "adminVerification": true
+}
 ```
+
 > This token must be included when making requests against the following endpoints:
 ```
     POST
@@ -86,7 +92,7 @@ Each response will be returned with one of the following HTTP status codes:
 
 #### _Endpoints_
 
-### Authentication
+### Authentication _for_ `JWT Token`
 
 - **[<code>POST</code> /api/v1/authenticate](documentation/POST_authenticate.md)**
 
