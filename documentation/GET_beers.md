@@ -1,52 +1,59 @@
-# <code>GET</code> /api/v1/beers?abv=NUM
+## `GET` Beers
 
-* **URL**
+### **URL**
 
-  `/api/v1/beers?abv=NUM`
+`/api/v1/beers?abv=NUM`
 
-* **Method:**
+### **Method:**
   
-  `GET`
+`GET`
   
-*  **URL Params**
+### **URL Params**
 
-   <_If URL params exist, specify them in accordance with name mentioned in URL section. Separate into optional and required. Document data constraints._> 
-
-   **Required:**
+> **Required:**
  
-   `No required params`
+`No required params`
 
-   **Optional:**
+> **Optional:**
  
-   `abv=[numeric]`
+`abv=[numeric]`
+    **Alcohol By Volume:** The `abv` query param may be included to search all beers that are >=  the specified abv. The value should be an integer or 2 decimal place float.
 
 * **Request Body**
 
-  `N/A`
+`N/A`
 
 * **Success Response:**
-  
-  <_What should the status code be on success and is there any returned data? This is useful when people need to to know what their callbacks should expect!_>
-
   * **Code:** 200 <br />
-    **Content:** `{ id : 12 }`
+    **Content:** Array of `beer` objects<br />
+    **Example Beer Object:
+    ```
+    {
+        "id": 135,
+        "name": "\"Hey Victor\" Smoked Porter",
+        "abv": "5.50",
+        "is_organic": "N",
+        "style": "Smoke Beer (Lager or Ale)",
+        "brewery_id": 109,
+        "created_at": "2017-10-13T00:27:56.585Z",
+        "updated_at": "2017-10-13T00:27:56.585Z"
+    }, ...
+    ```
  
 * **Error Response:**
-
-  <_Most endpoints will have many ways they can fail. From unauthorized access, to wrongful parameters etc. All of those should be liste d here. It might seem repetitive, but it helps prevent assumptions from being made where they should be._>
-
-  * **Code:** 401 UNAUTHORIZED <br />
-    **Content:** `{ error : "Log in" }`
+  * **Code:** 404 NOT FOUND <br />
+    **Content:** `{ error: 'Could not find any beers' }`
 
   OR
 
   * **Code:** 422 UNPROCESSABLE ENTRY <br />
-    **Content:** `{ error : "Email Invalid" }`
+    **Content:** `{ error: 'Invalid abv param. Please enter valid number.' }` <br />
+    **Troubleshoot:** If submitting `abv` query param, value must be numeric
 
-* **Sample Call:**
+* **Headers:**
 
-  <_Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable._> 
+`N/A`
 
 * **Notes:**
 
-  <_This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here._> 
+`N/A`
