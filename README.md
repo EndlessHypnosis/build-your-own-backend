@@ -92,7 +92,7 @@ Each response will be returned with one of the following HTTP status codes:
 
 ### Beers
 
-- **[<code>GET</code> /api/v1/beers?abv=NUM](documentation/GET_beers.md)**
+- **[<code>GET</code> /api/v1/beers`?abv=NUM`](documentation/GET_beers.md)**
 - **[<code>GET</code> /api/v1/beers/:id](documentation/GET_beers_id.md)**
 - **[<code>GET</code> /api/v1/breweries/:id/beers](documentation/GET_brewery_beers.md)**
 - **[<code>POST</code> /api/v1/beers](documentation/POST_beer.md)**
