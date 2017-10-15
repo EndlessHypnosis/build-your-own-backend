@@ -1,4 +1,4 @@
-# Build Your Own Backend
+# Build Your Own Backend `Brewery`
 
 ### by Jason Lucas & Nick Svetnicka for Turing
 
@@ -10,6 +10,7 @@
 
 ## Built With
 
+```
 * HTML
 * CSS
 * JavaScript
@@ -18,35 +19,36 @@
 * PostgreSQL
 * JWT Tokens
 * Chai/Mocha
+```
 
 
 ## API Documentation
 
-### Authentication
+### `Authentication`
 
 > This API requires a JWT Token in order to modify any of the data in the BYOB database. A token must be requested through the following endpoint:
 
-    /api/v1/authenticate
+    `/api/v1/authenticate`
 
 > The request body for the token must must include the properties:
-
+```
     appName
     email
-    
+```
 > Example body for Token request:
-
+```
     {
         "appName": "byob",
         "email": "someone@example.com"
     }
-
+```
 > This token must be included when making requests against the following endpoints:
-
+```
     POST
     DELETE
     PUT
     PATCH
-
+```
 > The token may be included in any of the following 3 methods:
 
 - Request Body: Include the token in a property called 'token' in the body of the request.
@@ -55,22 +57,23 @@
 
 - Query Parameter: Include an '?token=' query parameter to the request path with the token as value.
 
-### Authorization
+### `Authorization`
 
 > The JWT Token issued to the client is 'stamped' with either admin access (ability to call API endpoints in BYOB database which modifies data), or grants access to only GET request endpoints with read-only access.
 
 > This validation is based on detection of an email address with '@turing.io'
 
-### Resources
+### `Resources`
 
-> NOTES
+> **NOTES**
 
 - The response format for all API requests is JSON format.
 - Errors will be returned also as JSON objects with an 'error' property.
 - The value of 'error' is the error message as a string.
 
-#### HTTP Response Codes
+#### _HTTP Response Codes_
 Each response will be returned with one of the following HTTP status codes:
+**See documentation of individual endpoints for possible status code return values**
 
 * `200` `OK` The request was successful
 * `400` `Bad Request` There was a problem with the request (security, malformed, data validation, etc.)
@@ -80,7 +83,7 @@ Each response will be returned with one of the following HTTP status codes:
 * `405` `Method not allowed` The resource being accessed doesn't support the method specified (GET, POST, etc.).
 * `500` `Server Error` An error on the server occurred
 
-#### `Endpoints`
+#### _Endpoints_
 
 ##### Authentication
 
