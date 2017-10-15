@@ -51,11 +51,11 @@
 ```
 > The token may be included in any of the following 3 methods:
 
-- Request Body: Include the token in a property called 'token' in the body of the request.
+- **Request Body:** Include the token in a property called 'token' in the body of the request.
 
-- Authorization Header: Add an 'Authorization' header to the request with the token as the value.
+- **Authorization Header:** Add an 'Authorization' header to the request with the token as the value.
 
-- Query Parameter: Include an '?token=' query parameter to the request path with the token as value.
+- **Query Parameter:** Include an '?token=' query parameter to the request path with the token as value.
 
 ### `Authorization`
 
@@ -73,6 +73,7 @@
 
 #### _HTTP Response Codes_
 Each response will be returned with one of the following HTTP status codes:
+
 **See documentation of individual endpoints for possible status code return values**
 
 * `200` `OK` The request was successful
@@ -85,11 +86,11 @@ Each response will be returned with one of the following HTTP status codes:
 
 #### _Endpoints_
 
-##### Authentication
+### Authentication
 
 - **[<code>POST</code> /api/v1/authenticate](documentation/POST_authenticate.md)**
 
-##### Beers
+### Beers
 
 - **[<code>GET</code> /api/v1/beers?abv=NUM](documentation/GET_beers.md)**
 - **[<code>GET</code> /api/v1/beers/:id](documentation/GET_beers_id.md)**
@@ -98,7 +99,7 @@ Each response will be returned with one of the following HTTP status codes:
 - **[<code>PATCH</code> /api/v1/beers/:id](documentation/PATCH_beer.md)**
 - **[<code>DELETE</code> /api/v1/beers/:id](documentation/DELETE_beer.md)**
 
-#### Breweries
+### Breweries
 
 - **[<code>GET</code> /api/v1/breweries](documentation/GET_breweries.md)**
 - **[<code>GET</code> /api/v1/breweries/:id](documentation/GET_breweries_id.md)**
