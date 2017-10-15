@@ -17,11 +17,9 @@
 > **Optional:**
  
 `token`
-    **Signed JWT Token** Request your API access token from:
-    
-    **[`POST` /api/v1/authenticate](POST_authenticate.md)**
-    
-    _may also submit token in the body or as Authorization Header_
+**Signed JWT Token** Request your API access token from:
+**[`POST` /api/v1/authenticate](POST_authenticate.md)**
+_may also submit token in the body or as Authorization Header_
 
 ### **Headers**
 
