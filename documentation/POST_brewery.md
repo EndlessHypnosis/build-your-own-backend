@@ -33,10 +33,10 @@ _may also submit token in the body or as Authorization Header_
 
 ```
 {
-	  "name": "Epic Cider House",
-    "established": "2013",
-    "website": "http://www.ciderhouse.com",
-    "token": "jwt-token-string" _optional_
+	"name": "Epic Cider House",
+	"established": "2013",
+	"website": "http://www.ciderhouse.com",
+	"token": "jwt-token-string" _optional_
 }
 ```
 
@@ -46,8 +46,8 @@ _may also submit token in the body or as Authorization Header_
     **Example Brewery Object:**
     ```
     {
-        "id": 175,
-        "name": "Epic Cider House",
+	"id": 175,
+	"name": "Epic Cider House",
         "established": "2013",
         "website": "http://www.ciderhouse.com",
         "created_at": "2017-10-15T05:22:01.218Z",
