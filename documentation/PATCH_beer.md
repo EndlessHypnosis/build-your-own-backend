@@ -12,7 +12,8 @@
 
 > **Required:**
 
-`N/A`
+`id`
+    **ID of the _beer_ resource to partially update**
 
 > **Optional:**
 
@@ -68,7 +69,6 @@ _may also submit token in the body or as Authorization Header_
       error: 'Could not update beer. Unexpected error'
     }
     ```
-    **Troubleshoot:** make sure all required properties are included in the body.
 
 #### **_Notes:_**
 
