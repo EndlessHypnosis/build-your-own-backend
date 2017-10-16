@@ -30,7 +30,7 @@
 ### **Success Response:**
   * **Code:** 200 <br />
     **Content:** Single `brewery` object<br />
-    **Example Beer Object:**
+    **Example Brewery Object:**
     ```
     {
       "id": 82,
