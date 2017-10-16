@@ -12,7 +12,8 @@
 
 > **Required:**
 
-`N/A`
+`id`
+    **ID of the _brewery_ resource to update**
 
 > **Optional:**
 
@@ -33,7 +34,6 @@ _may also submit token in the body or as Authorization Header_
 
 ```
 {
-    "id": 93,
     "name": "1188 Brewing Company",
     "established": "2012",
     "website": "http://www.1188brewing.com/",
@@ -44,7 +44,7 @@ _may also submit token in the body or as Authorization Header_
 ### **Success Response:**
   * **Code:** 200 <br />
     **Content:** The newly updated `brewery` object<br />
-    **Example Beer Object:**
+    **Example Brewery Object:**
     ```
     {
         "id": 93,
