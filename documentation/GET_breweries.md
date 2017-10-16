@@ -14,6 +14,10 @@
 
 `No required params`
 
+> **Optional:**
+
+`No optional params`
+
 ### **Headers**
 
 `N/A`
@@ -25,7 +29,7 @@
 ### **Success Response:**
   * **Code:** 200 <br />
     **Content:** Array of `brewery` objects<br />
-    **Example Beer Object:**
+    **Example Brewery Object:**
     ```
     {
         "id": 82,
