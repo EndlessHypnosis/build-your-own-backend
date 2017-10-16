@@ -53,6 +53,7 @@
 ### **Error Response:**
   * **Code:** 400 BAD REQUEST <br />
     **Content:** `{ error: 'Invalid Request. Please enter valid appName and email' }`
+    
     **Troubleshoot:** make sure all required properties are included in the body.
 
 #### **_Notes:_**
