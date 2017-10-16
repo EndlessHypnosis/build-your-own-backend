@@ -83,20 +83,21 @@ Each response will be returned with one of the following HTTP status codes:
 **See documentation of individual endpoints for possible status code return values**
 
 * `200` `OK` The request was successful
+* `201` `Created` The request has been fulfilled and has resulted in one or more new resources being created
+* `204` `No Content` The server has successfully fulfilled the request and that there is no additional content to send in the response payload body
 * `400` `Bad Request` There was a problem with the request (security, malformed, data validation, etc.)
-* `401` `Unauthorized` The supplied API credentials are invalid
 * `403` `Forbidden` The credentials provided do not have permission to access the requested resource
 * `404` `Not found` An attempt was made to access a resource that does not exist in the API
-* `405` `Method not allowed` The resource being accessed doesn't support the method specified (GET, POST, etc.).
+* `422` `Unprocessable Entity` The server understands the content type of the request entity, but was unable to process the contained instructions
 * `500` `Server Error` An error on the server occurred
 
 #### _Endpoints_
 
-### Authentication _for_ `JWT Token`
+#### Authentication _for_ `JWT Token`
 
 - **[<code>POST</code> /api/v1/authenticate](documentation/POST_authenticate.md)**
 
-### Beers
+#### Beers
 
 - **[<code>GET</code> /api/v1/beers`?abv=NUM`](documentation/GET_beers.md)**
 - **[<code>GET</code> /api/v1/beers/:id](documentation/GET_beers_id.md)**
@@ -105,7 +106,7 @@ Each response will be returned with one of the following HTTP status codes:
 - **[<code>PATCH</code> /api/v1/beers/:id](documentation/PATCH_beer.md)**
 - **[<code>DELETE</code> /api/v1/beers/:id](documentation/DELETE_beer.md)**
 
-### Breweries
+#### Breweries
 
 - **[<code>GET</code> /api/v1/breweries](documentation/GET_breweries.md)**
 - **[<code>GET</code> /api/v1/breweries/:id](documentation/GET_breweries_id.md)**
